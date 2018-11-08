@@ -1,0 +1,21 @@
+{
+  "name": "con_life",
+  "version": "1.0.0",
+  "description": "App that allows users to view and contribute to a list of upcoming fan conventions in the US",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongoose": "^5.3.10",
+    "morgan": "^1.9.1"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Michelle Gaffney",
+  "license": "ISC"
+}
