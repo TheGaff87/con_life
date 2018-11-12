@@ -37,3 +37,37 @@ header {
     background-color: black;
     color: white;
 }
+
+.js-event {
+    border: 1px black solid;
+    display: inline-block;
+    margin: 1em;
+    padding: 1em;
+}
+
+.hidden {
+    display: none;
+}
+
+button {
+    display: block;
+    margin: 5px;
+}
+
+li {
+    list-style: none;
+}
+
+ul {
+    margin-left: 0;
+    padding-left: 0;
+}
+
+label {
+    display: block;
+    margin: 1em;
+}
+
+textarea {
+    display: block;
+}
