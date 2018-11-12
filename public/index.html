@@ -4,11 +4,25 @@
         <title>Con Life</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" href="main.css">
     </head>
     <body>
-        <p>Hello World</p>  
+        <header class="col-12" role="banner">
+          <div class="row">
+          <h1>Con Life</h1>
+          <h2>An open-source database for US fan conventions</h2>
+          </div>
+        </header>
+        <div class="row">
+        <main role="main" class="col-12">
+          <h3>Upcoming conventions:</h3>
+          <section role="region" class="results" aria-live="assertive" hidden>
+          </section>
+        </main>
+        </div>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="index.js"></script>  
-    </body>
+        <script src="main.js"></script>
+        </div>
+      </body>
 </html>
