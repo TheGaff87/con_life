@@ -1,23 +1,20 @@
 'use strict';
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
 
-// Here we use destructuring assignment with renaming so the two variables
-// called router (from ./users and ./auth) have different names
-// For example:
-// const actorSurnames = { james: "Stewart", robert: "De Niro" };
-// const { james: jimmy, robert: bobby } = actorSurnames;
-// console.log(jimmy); // Stewart - the variable name is jimmy, not james
-// console.log(bobby); // De Niro - the variable name is bobby, not robert
+mongoose.Promise = global.Promise;
+
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 
 mongoose.Promise = global.Promise;
 
 const { PORT, DATABASE_URL } = require('./config');
+const {Event} = require('./models')
 
 const app = express();
 
@@ -25,6 +22,8 @@ const app = express();
 app.use(morgan('common'));
 
 app.use(express.static('public'));
+
+app.use(express.json());
 
 // CORS
 app.use(function (req, res, next) {
@@ -52,8 +51,28 @@ app.get('/api/protected', jwtAuth, (req, res) => {
   });
 });
 
-app.use('*', (req, res) => {
-  return res.status(404).json({ message: 'Not Found' });
+app.get('/events', (req, res) => {
+  Event
+    .find()
+    .then(events => {
+      res.json(events.map(event => {
+        return {
+          id: event.id,
+          name: event.name,
+          dates: event.dateString,
+          location: event.location,
+          region: event.region,
+          website: event.website,
+          fandom: event.fandom,
+          guests: event.guests
+        };
+      }))
+    })
+
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
+    });
 });
 
 // Referenced by both runServer and closeServer. closeServer
