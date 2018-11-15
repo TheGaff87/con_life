@@ -54,6 +54,7 @@ app.get('/api/protected', jwtAuth, (req, res) => {
 app.get('/events', (req, res) => {
   Event
     .find()
+    .sort({startDate: 1})
     .then(events => {
       res.json(events.map(event => {
         return {

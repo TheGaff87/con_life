@@ -37,7 +37,7 @@ const eventSchema = mongoose.Schema({
     guests: {type: Array}
 });
 
-eventSchema.virtual("dateString").get(function() {
+eventSchema.virtual('dateString').get(function() {
     return `${this.startDate} - ${this.endDate}`.trim();
 });
 
