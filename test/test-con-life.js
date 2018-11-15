@@ -152,38 +152,44 @@ function tearDownDb() {
       });
     });
   
-    /*describe('POST endpoint', function() {
-      // strategy: make a POST request with data,
-      // then prove that the restaurant we get back has
-      // right keys, and that `id` is there (which means
-      // the data was inserted into db)
-      it('should add a new blogpost', function() {
+    describe('POST endpoint', function() {
+      it('should add a new event', function() {
   
-        const newPost = generateBlogData();
+        const newEvent = {
+            "name": "Rhode Island Comic Con",
+            "startDate": "11/01/2018",
+            "endDate": "11/03/2018",
+            "location": "Providence, RI",
+            "region": "northeast",
+            "website": "http://www.ricomiccon.com/",
+            "fandom": "none"
+        };
   
         return chai.request(app)
-          .post('/posts')
-          .send(newPost)
+          .post('/events')
+          .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6IiIsImV2ZW50cyI6W119LCJpYXQiOjE1NDIzMjEzODAsImV4cCI6MTU0MjkyNjE4MCwic3ViIjoidGVzdCJ9.M6u5AOOug6dmvUFqU1crGyQwZt0OzNvJXMjI6ohCyzU')
+          .send(newEvent)
           .then(function(res) {
             expect(res).to.have.status(201);
             expect(res).to.be.json;
             expect(res.body).to.be.a('object');
             expect(res.body).to.include.keys(
-              'id', 'author', 'title', 'content', 'created');
-            // cause Mongo should have created id on insertion
+                'id', 'name', 'dates', 'location', 'region', 'website', 'fandom');
             expect(res.body.id).to.not.be.null;
-            return BlogPost.findById(res.body.id);
+            return Event.findById(res.body.id);
           })
-          .then(function(post) {
-            expect(post.title).to.equal(newPost.title);
-            expect(post.author.firstName).to.equal(newPost.author.firstName);
-            expect(post.author.lastName).to.equal(newPost.author.lastName);
-            expect(post.content).to.equal(newPost.content);
+          .then(function(event) {
+            expect(event.name).to.equal(newEvent.name);
+            expect(event.dates).to.equal(newEvent.dates);
+            expect(event.location).to.equal(newEvent.location);
+            expect(event.region).to.equal(newEvent.region);
+            expect(event.website).to.equal(newEvent.website);
+            expect(event.fandom).to.equal(newEvent.fandom);
           });
       });
     });
   
-    describe('PUT endpoint', function() {
+    /*describe('PUT endpoint', function() {
   
       it('should update fields you send over', function() {
         const updateData = {
