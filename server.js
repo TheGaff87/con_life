@@ -5,6 +5,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
+const cors = require('cors');
 
 mongoose.Promise = global.Promise;
 
@@ -25,6 +26,8 @@ app.use(express.static('public'));
 
 app.use(express.json());
 
+app.use(cors());
+
 // CORS
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -43,13 +46,6 @@ app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
-
-// A protected endpoint which needs a valid JWT to access it
-app.get('/api/protected', jwtAuth, (req, res) => {
-  return res.json({
-    data: 'rosebud'
-  });
-});
 
 app.get('/events', (req, res) => {
   Event
@@ -73,6 +69,42 @@ app.get('/events', (req, res) => {
     .catch(err => {
       console.error(err);
       res.status(500).json({message: 'Internal server error'});
+    });
+});
+
+app.post('/events', jwtAuth, (req, res) => {
+  const requiredFields = ['name', 'startDate', 'endDate', 'location', 'region', 'website', 'fandom'];
+  for (let i = 0; i < requiredFields.length; i++) {
+    const field = requiredFields[i];
+    if (!(field in req.body)) {
+      const message = `Missing \`${field}\` in request body`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  }
+
+  Event
+    .create({
+      name: req.body.name,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      location: req.body.location,
+      region: req.body.region,
+      website: req.body.website,
+      fandom: req.body.fandom
+    })
+    .then(event => res.status(201).json({
+      id: event._id,
+      name: event.name,
+      dates: `${event.startDate} - ${event.endDate}`,
+      location: event.location,
+      region: event.region,
+      website: event.website,
+      fandom: event.fandom
+  }))
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
     });
 });
 

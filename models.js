@@ -11,27 +11,22 @@ const eventSchema = mongoose.Schema({
     startDate: {
         type: String,
         required: true,
-        unique: true
     },
     endDate: {
         type: String,
         required: true,
-        unique: true
     },
     location: {
         type: String,
         required: true,
-        unique: true
     },
     region: {
         type: String,
         required: true,
-        unique: true
     },
     website: {
         type: String,
         required: true,
-        unique: true
     },
     fandom: {type: String},
     guests: {type: Array}
