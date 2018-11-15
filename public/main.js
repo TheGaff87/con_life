@@ -1,37 +1,4 @@
-let MOCK_GET_EVENTS = {
-    "events": [
-        {
-            "name": "ACE Comic Con",
-            "sortDate": "2019-01-11",
-            "dates": "January 11-12-13, 2019",
-            "location": "Glendale, AZ",
-            "region": "west",
-            "website": "https://aceuniverse.com/",
-            "fandom": "none",
-            "guests": ["Tom Hiddleston", "David Tennant", "Michael Fassbender", "Krysten Ritter", "Charlie Cox", "Tye Sheridan", "Alexandra Shipp"]
-        },
-        {
-            "name": "Conageddon",
-            "sort-date": "2019-03-16",
-            "dates": "March 16-17, 2019",
-            "location": "Boston, MA",
-            "region": "northeast",
-            "website": "https://conageddon.com/",
-            "fandom": "The 100",
-            "guests": ["Eliza Taylor", "Bob Morley", "Zach McGowan", "Tasya Teles", "Richard Harmon", "Christopher Larkin", "Chelsey Reist", "Luisa D'Oliveira"]
-        },
-        {
-            "name": "Awesome Con",
-            "sort-date": "2019-04-26",
-            "dates": "April 26-28, 2019",
-            "location": "Washington, DC",
-            "region": "south",
-            "website": "http://awesome-con.com",
-            "fandom": "none",
-            "guests": ["Brent Spiner", "Jon Bernthal", "Marina Sirtis", "Tim Curry", "Val Kilmer"]
-        }
-    ]
-};
+"use strict";
 
 //GET endpoint
 function getAllEvents(callbackFn) {
