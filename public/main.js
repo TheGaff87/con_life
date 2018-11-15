@@ -1,8 +1,15 @@
 "use strict";
 
 //GET endpoint
-function getAllEvents(callbackFn) {
-    setTimeout(function(){callbackFn(MOCK_GET_EVENTS)}, 1);
+function getAllEvents(callback) {
+    const settings = {
+        url: "localhost:8080/events",
+        dataType: 'json',
+        type: 'GET',
+        success: callback
+    };
+
+    $.ajax(settings);
 }
 
 function displayAllEvents(data) {
