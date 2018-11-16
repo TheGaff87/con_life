@@ -16,6 +16,7 @@ mongoose.Promise = global.Promise;
 
 const { PORT, DATABASE_URL } = require('./config');
 const {Event} = require('./models')
+const {User} = require('./users/models')
 
 const app = express();
 
@@ -122,6 +123,36 @@ app.get('/events/fandom/:term', (req, res) => {
   });
 });
 
+app.get('/events/:userid', jwtAuth, (req, res) =>{
+  User
+    .findById(req.params.userid)
+    .then(function(user) {
+      const events = user.events;
+      for (let i = 0; i < events.length; i++) {
+        Event
+          .findById(events[i])
+          .then(events => {
+            res.json(events.map(event => {
+              return {
+                id: event.id,
+                name: event.name,
+                dates: event.dateString,
+                location: event.location,
+                region: event.region,
+                website: event.website,
+                fandom: event.fandom,
+                guests: event.guests
+              };
+            }))
+          })
+      }  
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
+    });
+  });
+
 app.post('/events', jwtAuth, (req, res) => {
   const requiredFields = ['name', 'startDate', 'endDate', 'location', 'region', 'website', 'fandom'];
   for (let i = 0; i < requiredFields.length; i++) {
@@ -174,6 +205,26 @@ app.put('/events/:id', jwtAuth, (req, res) => {
   Event
     .findByIdAndUpdate(req.params.id, { $push: toUpdate })
     .then(event => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+});
+
+app.put('/api/users/:id', jwtAuth, (req, res) => {
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    const message = (
+      `Request path name (${req.params.id}) and request body name ` +
+      `(${req.body.id}) must match`);
+    console.error(message);
+    return res.status(400).json({ message: message });
+  }
+
+  const toUpdate = {
+    region: req.body.region,
+    events: req.body.events
+  };
+
+  User
+  .findByIdAndUpdate(req.params.id, { $push: toUpdate })
+    .then(user => res.status(204).end())
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
