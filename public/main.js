@@ -1,19 +1,21 @@
 "use strict";
 
 //GET endpoint
-function getAllEvents(callback) {
+function getAllEvents() {
     const settings = {
         url: "localhost:8080/events",
         dataType: 'json',
         type: 'GET',
-        success: callback
+        success: function(data) {
+            console.log(data)
+        }
     };
 
     $.ajax(settings);
 }
 
 function displayAllEvents(data) {
-    for (i = 0; i < data.events.length; i++) {
+    for (let i = 0; i < data.events.length; i++) {
         $(".events").append(
             `
             <article class="js-event">

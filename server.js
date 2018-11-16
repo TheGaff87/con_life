@@ -29,7 +29,7 @@ app.use(express.json());
 app.use(cors());
 
 // CORS
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
@@ -37,7 +37,7 @@ app.use(function (req, res, next) {
     return res.send(204);
   }
   next();
-});
+});*/
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
