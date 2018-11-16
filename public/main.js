@@ -1,20 +1,18 @@
 "use strict";
 
 //GET endpoint
-function getAllEvents() {
-    const settings = {
+function getAllEvents(callback) {
+    $.ajax({
         url: "localhost:8080/events",
-        dataType: 'json',
-        type: 'GET',
-        success: function(data) {
-            console.log(data)
-        }
-    };
-
-    $.ajax(settings);
-}
+        type: "GET",
+        dataType: "json",
+        contentType: "application/json",
+        success: callback
+    });
+};
 
 function displayAllEvents(data) {
+    console.log(data);
     for (let i = 0; i < data.events.length; i++) {
         $(".events").append(
             `

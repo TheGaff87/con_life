@@ -1,7 +1,7 @@
 {
     "name": "ACE Comic Con",
-    "startDate": "01/11/2019",
-    "endDate": "01/13/2019",
+    "startDate": "2019/01/11",
+    "endDate": "2019/01/13",
     "location": "Glendale, AZ",
     "region": "west",
     "website": "https://aceuniverse.com/",
@@ -18,8 +18,8 @@
 }
         {
     "name": "Conageddon",
-    "startDate": "03/16/2019",
-    "endDate": "03/17/2019",
+    "startDate": "2019/03/16",
+    "endDate": "2019/03/16",
     "location": "Boston, MA",
     "region": "northeast",
     "website": "https://conageddon.com/",
@@ -37,8 +37,8 @@
 }
         {
     "name": "Awesome Con",
-    "startDate": "04/26/2019",
-    "endDate": "04/28/2019",
+    "startDate": "2019/04/26",
+    "endDate": "2019/04/28",
     "location": "Washington, DC",
     "region": "south",
     "website": "http://awesome-con.com",

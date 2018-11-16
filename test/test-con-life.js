@@ -189,55 +189,55 @@ function tearDownDb() {
       });
     });
   
-    /*describe('PUT endpoint', function() {
+    describe('PUT endpoint', function() {
   
       it('should update fields you send over', function() {
         const updateData = {
-          title: 'fofofofofofofof',
+          guests: "Will Smith",
         };
   
-        return BlogPost
+        return Event
           .findOne()
-          .then(function(post) {
-            updateData.id = post.id;
+          .then(function(event) {
+            updateData.id = event.id;
   
-            // make request then inspect it to make sure it reflects
-            // data we sent
             return chai.request(app)
-              .put(`/posts/${post.id}`)
+              .put(`/events/${event.id}`)
+              .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6IiIsImV2ZW50cyI6W119LCJpYXQiOjE1NDIzMjEzODAsImV4cCI6MTU0MjkyNjE4MCwic3ViIjoidGVzdCJ9.M6u5AOOug6dmvUFqU1crGyQwZt0OzNvJXMjI6ohCyzU')
               .send(updateData);
           })
           .then(function(res) {
             expect(res).to.have.status(204);
   
-            return BlogPost.findById(updateData.id);
+            return Event.findById(updateData.id);
           })
-          .then(function(post) {
-            expect(post.title).to.equal(updateData.title);
+          .then(function(event) {
+            expect(event.guests).to.include(updateData.guests);
           });
       });
     });
   
     describe('DELETE endpoint', function() {
       
-      it('delete a blogpost by id', function() {
+      it('delete an event by id', function() {
   
-        let blogpost;
+        let event;
   
-        return BlogPost
+        return Event
           .findOne()
-          .then(function(_blogpost) {
-            blogpost = _blogpost;
-            return chai.request(app).delete(`/posts/${blogpost.id}`);
+          .then(function(_event) {
+            event = _event;
+            return chai.request(app).delete(`/events/${event.id}`)
+            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6IiIsImV2ZW50cyI6W119LCJpYXQiOjE1NDIzMjEzODAsImV4cCI6MTU0MjkyNjE4MCwic3ViIjoidGVzdCJ9.M6u5AOOug6dmvUFqU1crGyQwZt0OzNvJXMjI6ohCyzU')
           })
           .then(function(res) {
             expect(res).to.have.status(204);
-            return BlogPost.findById(blogpost.id);
+            return Event.findById(event.id);
           })
-          .then(function(_blogpost) {
-            expect(_blogpost).to.be.null;
+          .then(function(_event) {
+            expect(_event).to.be.null;
           });
       });
-    });*/
+    });
   });
   

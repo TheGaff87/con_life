@@ -91,7 +91,8 @@ app.post('/events', jwtAuth, (req, res) => {
       location: req.body.location,
       region: req.body.region,
       website: req.body.website,
-      fandom: req.body.fandom
+      fandom: req.body.fandom,
+      guests: req.body.guests
     })
     .then(event => res.status(201).json({
       id: event._id,
@@ -100,12 +101,37 @@ app.post('/events', jwtAuth, (req, res) => {
       location: event.location,
       region: event.region,
       website: event.website,
-      fandom: event.fandom
+      fandom: event.fandom,
+      guests: event.guests
   }))
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
     });
+});
+
+app.put('/events/:id', jwtAuth, (req, res) => {
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    const message = (
+      `Request path name (${req.params.id}) and request body name ` +
+      `(${req.body.id}) must match`);
+    console.error(message);
+    return res.status(400).json({ message: message });
+  }
+
+  const toUpdate = {guests: req.body.guests};
+
+  Event
+    .findByIdAndUpdate(req.params.id, { $push: toUpdate })
+    .then(event => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+});
+
+app.delete('/events/:id', jwtAuth, (req, res) => {
+  Event
+    .findByIdAndRemove(req.params.id)
+    .then(event => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error'}));
 });
 
 // Referenced by both runServer and closeServer. closeServer
