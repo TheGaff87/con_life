@@ -72,6 +72,56 @@ app.get('/events', (req, res) => {
     });
 });
 
+app.get('/events/region/:term', (req, res) => {
+  Event
+    .find({region: req.params.term})
+    .sort({startDate: 1})
+    .then(events => {
+      res.json(events.map(event => {
+        return {
+          id: event.id,
+          name: event.name,
+          dates: event.dateString,
+          location: event.location,
+          region: event.region,
+          website: event.website,
+          fandom: event.fandom,
+          guests: event.guests
+        };
+      }))
+    })
+
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({message: 'Internal server error'});
+  });
+});
+
+app.get('/events/fandom/:term', (req, res) => {
+  Event
+    .find({fandom: req.params.term})
+    .sort({startDate: 1})
+    .then(events => {
+      res.json(events.map(event => {
+        return {
+          id: event.id,
+          name: event.name,
+          dates: event.dateString,
+          location: event.location,
+          region: event.region,
+          website: event.website,
+          fandom: event.fandom,
+          guests: event.guests
+        };
+      }))
+    })
+
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({message: 'Internal server error'});
+  });
+});
+
 app.post('/events', jwtAuth, (req, res) => {
   const requiredFields = ['name', 'startDate', 'endDate', 'location', 'region', 'website', 'fandom'];
   for (let i = 0; i < requiredFields.length; i++) {
