@@ -167,7 +167,7 @@ function tearDownDb() {
   
         return chai.request(app)
           .post('/events')
-          .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6IiIsImV2ZW50cyI6W119LCJpYXQiOjE1NDIzMjEzODAsImV4cCI6MTU0MjkyNjE4MCwic3ViIjoidGVzdCJ9.M6u5AOOug6dmvUFqU1crGyQwZt0OzNvJXMjI6ohCyzU')
+          .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6Im5vcnRoZWFzdCIsImV2ZW50cyI6W119LCJpYXQiOjE1NDI2NjY2MzQsImV4cCI6MTU0MzI3MTQzNCwic3ViIjoidGVzdCJ9.URhqjQfMhH3CqDe9XBOTxjcINocxRq1VIYnXuzXFMiw')
           .send(newEvent)
           .then(function(res) {
             expect(res).to.have.status(201);
@@ -203,7 +203,7 @@ function tearDownDb() {
   
             return chai.request(app)
               .put(`/events/${event.id}`)
-              .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6IiIsImV2ZW50cyI6W119LCJpYXQiOjE1NDIzMjEzODAsImV4cCI6MTU0MjkyNjE4MCwic3ViIjoidGVzdCJ9.M6u5AOOug6dmvUFqU1crGyQwZt0OzNvJXMjI6ohCyzU')
+              .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6Im5vcnRoZWFzdCIsImV2ZW50cyI6W119LCJpYXQiOjE1NDI2NjY2MzQsImV4cCI6MTU0MzI3MTQzNCwic3ViIjoidGVzdCJ9.URhqjQfMhH3CqDe9XBOTxjcINocxRq1VIYnXuzXFMiw')
               .send(updateData);
           })
           .then(function(res) {
@@ -228,7 +228,7 @@ function tearDownDb() {
           .then(function(_event) {
             event = _event;
             return chai.request(app).delete(`/events/${event.id}`)
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6IiIsImV2ZW50cyI6W119LCJpYXQiOjE1NDIzMjEzODAsImV4cCI6MTU0MjkyNjE4MCwic3ViIjoidGVzdCJ9.M6u5AOOug6dmvUFqU1crGyQwZt0OzNvJXMjI6ohCyzU')
+            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6Im5vcnRoZWFzdCIsImV2ZW50cyI6W119LCJpYXQiOjE1NDI2NjY2MzQsImV4cCI6MTU0MzI3MTQzNCwic3ViIjoidGVzdCJ9.URhqjQfMhH3CqDe9XBOTxjcINocxRq1VIYnXuzXFMiw')
           })
           .then(function(res) {
             expect(res).to.have.status(204);

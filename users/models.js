@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 
 mongoose.Promise = global.Promise;
 
+const {Event} = require('../models')
+
 const UserSchema = mongoose.Schema({
   username: {
     type: String,
@@ -15,8 +17,13 @@ const UserSchema = mongoose.Schema({
     required: true
   },
   region: {type: String},
-  events: {type: Array}
+  events: [{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}],
 });
+
+UserSchema.pre('findById', function(next) {
+  this.populate('event');
+  next();
+})
 
 UserSchema.methods.serialize = function() {
   return {

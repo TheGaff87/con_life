@@ -126,27 +126,10 @@ app.get('/events/fandom/:term', (req, res) => {
 app.get('/events/:userid', jwtAuth, (req, res) =>{
   User
     .findById(req.params.userid)
-    .then(function(user) {
-      const events = user.events;
-      for (let i = 0; i < events.length; i++) {
-        Event
-          .findById(events[i])
-          .then(events => {
-            res.json(events.map(event => {
-              return {
-                id: event.id,
-                name: event.name,
-                dates: event.dateString,
-                location: event.location,
-                region: event.region,
-                website: event.website,
-                fandom: event.fandom,
-                guests: event.guests
-              };
-            }))
-          })
-      }  
+    .then(user => {
+      res.json(user.events);
     })
+       
     .catch(err => {
       console.error(err);
       res.status(500).json({message: 'Internal server error'});
@@ -218,7 +201,6 @@ app.put('/api/users/:id', jwtAuth, (req, res) => {
   }
 
   const toUpdate = {
-    region: req.body.region,
     events: req.body.events
   };
 

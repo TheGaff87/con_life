@@ -1,25 +1,26 @@
 "use strict";
 
+const time = moment("2018/11/01").format("MM/DD/YYYY");
+console.log(time)
+
 //GET endpoint
 function getAllEvents(callback) {
     $.ajax({
-        url: "localhost:8080/events",
+        url: "/events",
         type: "GET",
         dataType: "json",
-        contentType: "application/json",
         success: callback
     });
 };
 
 function displayAllEvents(data) {
-    console.log(data);
-    for (let i = 0; i < data.events.length; i++) {
+    for (let i = 0; i < data.length; i++) {
         $(".events").append(
             `
             <article class="js-event">
-                <h3><a href="${data.events[i].website}" target="_blank">${data.events[i].name}</a></h3>
-                <h3>${data.events[i].dates}</h3>
-                <h3>${data.events[i].location}</h3>
+                <h3><a href="${data[i].website}" target="_blank">${data[i].name}</a></h3>
+                <h3>${data[i].dates}</h3>
+                <h3>${data[i].location}</h3>
                 <button type="button" class="js-guest-list"><h4>Celebrity Guests</h4>
                 <div class="hidden js-guests-list ${i}">
                     <ul class="${i}"></ul>
@@ -36,8 +37,8 @@ function displayAllEvents(data) {
             </article>
             `
         )
-        for (a = 0; a < data.events[i].guests.length; a++) {
-            $(".events ul" + "." + i).append(`<li>${data.events[i].guests[a]}</li>`);
+        for (let a = 0; a < data[i].guests.length; a++) {
+            $(".events ul" + "." + i).append(`<li>${data[i].guests[a]}</li>`);
         }
     }
 }
