@@ -53,18 +53,10 @@ app.get('/events', (req, res) => {
     .find()
     .sort({startDate: 1})
     .then(events => {
-      res.json(events.map(event => {
-        return {
-          id: event.id,
-          name: event.name,
-          dates: event.dateString,
-          location: event.location,
-          region: event.region,
-          website: event.website,
-          fandom: event.fandom,
-          guests: event.guests
-        };
-      }))
+      res.json({
+        events: events.map(
+          (event) => event.serialize())
+      });
     })
 
     .catch(err => {
@@ -78,18 +70,10 @@ app.get('/events/region/:term', (req, res) => {
     .find({region: req.params.term})
     .sort({startDate: 1})
     .then(events => {
-      res.json(events.map(event => {
-        return {
-          id: event.id,
-          name: event.name,
-          dates: event.dateString,
-          location: event.location,
-          region: event.region,
-          website: event.website,
-          fandom: event.fandom,
-          guests: event.guests
-        };
-      }))
+      res.json({
+        events: events.map(
+          (event) => event.serialize())
+      });
     })
 
   .catch(err => {
@@ -98,23 +82,27 @@ app.get('/events/region/:term', (req, res) => {
   });
 });
 
+app.get('/events/fandom', (req, res) => {
+  Event
+    .distinct("fandom")
+    .then(fandom => {
+      res.json({fandom});
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({message: 'Internal server error'});
+  });
+})
+
 app.get('/events/fandom/:term', (req, res) => {
   Event
     .find({fandom: req.params.term})
     .sort({startDate: 1})
     .then(events => {
-      res.json(events.map(event => {
-        return {
-          id: event.id,
-          name: event.name,
-          dates: event.dateString,
-          location: event.location,
-          region: event.region,
-          website: event.website,
-          fandom: event.fandom,
-          guests: event.guests
-        };
-      }))
+      res.json({
+        events: events.map(
+          (event) => event.serialize())
+      });
     })
 
   .catch(err => {
@@ -127,7 +115,11 @@ app.get('/events/:userid', jwtAuth, (req, res) =>{
   User
     .findById(req.params.userid)
     .then(user => {
-      res.json(user.events);
+      const events = user.events;
+      res.json({
+        events: events.map(
+          (event) => event.serialize())
+      });
     })
        
     .catch(err => {
@@ -159,14 +151,8 @@ app.post('/events', jwtAuth, (req, res) => {
       guests: req.body.guests
     })
     .then(event => res.status(201).json({
-      id: event._id,
-      name: event.name,
-      dates: `${event.startDate} - ${event.endDate}`,
-      location: event.location,
-      region: event.region,
-      website: event.website,
-      fandom: event.fandom,
-      guests: event.guests
+      events: events.map(
+        (event) => event.serialize())
   }))
     .catch(err => {
       console.error(err);

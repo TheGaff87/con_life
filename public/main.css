@@ -4,7 +4,7 @@
 }
 
 .row {
-    max-width: 1000px;
+    max-width: 1200px;
     padding-left: 20px;
     padding-right: 20px;
     margin: 0 auto;
@@ -30,6 +30,15 @@
 /* Mobile defaults */
 .col-12, .col-6 {
   width: 100%;
+}
+
+main {
+    overflow: auto;
+}
+
+main h2 {
+    clear: both;
+    margin-top: 3em;
 }
 
 header {
@@ -70,4 +79,9 @@ label {
 
 textarea {
     display: block;
+}
+
+.signup-div, .signin-div {
+    margin-top: 1em;
+    display: inline-block;
 }

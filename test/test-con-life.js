@@ -133,7 +133,7 @@ function tearDownDb() {
             res.body.forEach(function(event) {
               expect(event).to.be.a('object');
               expect(event).to.include.keys(
-                'id', 'name', 'dates', 'location', 'region', 'website', 'fandom', 'guests');
+                'id', 'name', 'startDate', 'endDate', 'location', 'region', 'website', 'fandom', 'guests');
             });
             resEvent = res.body[0];
             return Event.findById(resEvent.id);
@@ -142,7 +142,8 @@ function tearDownDb() {
   
             expect(resEvent.id).to.equal(event.id);
             expect(resEvent.name).to.equal(event.name);
-            expect(resEvent.dates).to.equal(`${event.startDate} - ${event.endDate}`);
+            expect(resEvent.startDate).to.equal(event.startDate);
+            expect(resEvent.endDate).to.equal(event.endDate);
             expect(resEvent.location).to.equal(event.location);
             expect(resEvent.region).to.equal(event.region);
             expect(resEvent.website).to.equal(event.website);
@@ -174,13 +175,14 @@ function tearDownDb() {
             expect(res).to.be.json;
             expect(res.body).to.be.a('object');
             expect(res.body).to.include.keys(
-                'id', 'name', 'dates', 'location', 'region', 'website', 'fandom');
+                'id', 'name', 'startDate', 'endDate', 'location', 'region', 'website', 'fandom');
             expect(res.body.id).to.not.be.null;
             return Event.findById(res.body.id);
           })
           .then(function(event) {
             expect(event.name).to.equal(newEvent.name);
-            expect(event.dates).to.equal(newEvent.dates);
+            expect(event.startDate).to.equal(newEvent.startDate);
+            expect(event.endDate).to.equal(newEvent.endDate);
             expect(event.location).to.equal(newEvent.location);
             expect(event.region).to.equal(newEvent.region);
             expect(event.website).to.equal(newEvent.website);

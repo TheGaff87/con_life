@@ -1,9 +1,10 @@
 "use strict";
 
-const time = moment("2018/11/01").format("MM/DD/YYYY");
-console.log(time)
+function formatDates(startDate, endDate) {
+    return moment(startDate).format("MM/DD/YYYY") + " " + "-" + " " + moment(endDate).format("MM/DD/YYYY");
+}
 
-//GET endpoint
+//GET all events
 function getAllEvents(callback) {
     $.ajax({
         url: "/events",
@@ -13,32 +14,37 @@ function getAllEvents(callback) {
     });
 };
 
+//GET all fandoms
+function getAllFandoms(callback) {
+    $.ajax({
+        url: "/events/fandom",
+        type: "GET",
+        dataType: "json",
+        success: callback
+    })
+}
+
 function displayAllEvents(data) {
-    for (let i = 0; i < data.length; i++) {
+    const events = data.events;
+    for (let i = 0; i < events.length; i++) {
+        const dates = formatDates(events[i].startDate, events[i].endDate)
+
         $(".events").append(
             `
             <article class="js-event">
-                <h3><a href="${data[i].website}" target="_blank">${data[i].name}</a></h3>
-                <h3>${data[i].dates}</h3>
-                <h3>${data[i].location}</h3>
+                <p class="id hidden">${events[i].id}</p>
+                <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
+                <h3>${dates}</h3>
+                <h3>${events[i].location}</h3>
                 <button type="button" class="js-guest-list"><h4>Celebrity Guests</h4>
                 <div class="hidden js-guests-list ${i}">
                     <ul class="${i}"></ul>
                 </div></button>
-                <div class="edit-event-div">
-                    <button type="button" class="edit-event-button">Edit this event</button>
-                </div>
-                <div class="delete-option-div">
-                    <button type="button" class="delete-option-button">Delete this event</button>
-                    <div class="delete-event-div hidden">
-                        <p>Are you sure you want to delete this event?</p>
-                        <button type="submit" class="delete-event-button">Delete event</button>
-                </div>
             </article>
             `
         )
-        for (let a = 0; a < data[i].guests.length; a++) {
-            $(".events ul" + "." + i).append(`<li>${data[i].guests[a]}</li>`);
+        for (let a = 0; a < events[i].guests.length; a++) {
+            $(".events ul" + "." + i).append(`<li>${events[i].guests[a]}</li>`);
         }
     }
 }
@@ -52,6 +58,147 @@ function getAndDisplayAllEvents() {
     $(".events").prop('hidden', false);
     getAllEvents(displayAllEvents);
 }
+
+$(".signup-notice").click(function(event) {
+    $(".signup-form").toggleClass("hidden");
+})
+
+$(".signin-notice").click(function(event) {
+    $(".signin-form").toggleClass("hidden");
+})
+
+//GET--events filtered by region
+function filterByRegion(term, callback) {
+    $.ajax({
+        url: "/events/region/" + term,
+        type: "GET",
+        dataType: "json",
+        success: callback
+    });
+};
+
+$(".region").change(function() {
+    $(".events").html("");
+    if ($(".region").val() === "all") {
+        getAndDisplayAllEvents();
+    }else{
+    const region = $(".region").val();
+    filterByRegion(region, displayAllEvents)
+    }
+})
+
+//GET--events filtered by fandom
+
+function displayAllFandoms(data) {
+    const fandom = data.fandom;
+    for (let i = 0; i < fandom.length; i++) {
+        if (fandom[i] !== "none") {
+            $(".fandom").append(`
+            <option value="${fandom[i]}">${fandom[i]}</option>
+            `
+            )
+        }
+    }
+}
+
+function getAndDisplayAllFandoms() {
+    getAllFandoms(displayAllFandoms);
+}
+
+function filterByFandom(term, callback) {
+    $.ajax({
+        url: "/events/fandom/" + term,
+        type: "GET",
+        dataType: "json",
+        success: callback
+    });
+};
+
+$(".fandom").change(function() {
+    $(".events").html("");
+    if ($(".fandom").val() === "all") {
+        getAndDisplayAllEvents();
+    }else{
+    const fandom = $(".fandom").val();
+    filterByFandom(fandom, displayAllEvents)
+    }
+})
+
+//POST endpoint--signup for an account
+function createAccount(user, pass, region, callback) {
+    $.ajax({
+        url: "/api/users",
+        data: JSON.stringify({
+            username: user,
+            password: pass,
+            region: region
+        }),
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        success: callback
+    })
+}
+
+let username = "";
+let region = "";
+let token = "";
+
+function accountFollowUp(data) {
+    username = data.username;
+    region = data.region;
+    $(".username1").val("");
+    $(".password1").val("");
+    $(".user-region").val("----");
+    $(".signup-form").attr("class", "hidden");
+}
+
+$(".signup-button").click(function (event) {
+    event.preventDefault();
+    const user1 = $(".username1").val();
+    const pass1 = $(".password1").val();
+    const region1 = $(".user-region").val();
+    createAccount(user1, pass1, region1, accountFollowUp);
+})
+
+//POST endpoint--sign-in to account
+function validateAccount(user, pass, callback) {
+    $.ajax({
+        url: "/api/auth/login",
+        data: JSON.stringify({
+            username: user,
+            password: pass,
+        }),
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json",
+        success: callback
+    })
+}
+
+function displayAllEventsAuth()
+
+function postValidation(data) {
+    token = data.authToken;
+    $(".username2").val("");
+    $(".password2").val("");
+    $(".signin-form").attr("class", "hidden");
+}
+
+$(".signin-button").click(function(event) {
+    event.preventDefault();
+    const user2 = $(".username2").val();
+    const pass2 = $(".password2").val();
+    validateAccount(user2, pass2, postValidation);
+    $(".signup-div").attr("class", "hidden");
+    $(".login").append(`
+        <p class="welcome">Welcome, ${username}</p>
+        <button type="button" class="add-event">Add an event</button>
+    `)
+    filterByRegion(region, displayAllEventsAuth);
+})
+
+//replace signup/signin with Welcome ___ and signout (add signout functionality); GET request for conventions filtered by user's region; add buttons for add, edit, delete
 
 //POST endpoint
 $(".add-event").on("click", ".add-event-button", function(event) {
@@ -139,6 +286,7 @@ $(".events").on("click", ".delete-option-button", function(event) {
 
 function handleApp() {
     getAndDisplayAllEvents();
+    getAndDisplayAllFandoms();
 }
 
 $(handleApp);
