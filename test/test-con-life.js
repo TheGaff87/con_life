@@ -110,11 +110,11 @@ function tearDownDb() {
           .then(function(_res) {
             res = _res;
             expect(res).to.have.status(200);
-            expect(res.body).to.have.lengthOf.at.least(1);
+            expect(res.body.events).to.have.lengthOf.at.least(1);
             return Event.count();
           })
           .then(function(count) {
-            expect(res.body).to.have.lengthOf(count);
+            expect(res.body.events).to.have.lengthOf(count);
           });
       });
   
@@ -127,15 +127,15 @@ function tearDownDb() {
           .then(function(res) {
             expect(res).to.have.status(200);
             expect(res).to.be.json;
-            expect(res.body).to.be.a('array');
-            expect(res.body).to.have.lengthOf.at.least(1);
+            expect(res.body.events).to.be.a('array');
+            expect(res.body.events).to.have.lengthOf.at.least(1);
   
-            res.body.forEach(function(event) {
+            res.body.events.forEach(function(event) {
               expect(event).to.be.a('object');
               expect(event).to.include.keys(
-                'id', 'name', 'startDate', 'endDate', 'location', 'region', 'website', 'fandom', 'guests');
+                'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests');
             });
-            resEvent = res.body[0];
+            resEvent = res.body.events[0];
             return Event.findById(resEvent.id);
           })
           .then(function(event) {
@@ -145,9 +145,7 @@ function tearDownDb() {
             expect(resEvent.startDate).to.equal(event.startDate);
             expect(resEvent.endDate).to.equal(event.endDate);
             expect(resEvent.location).to.equal(event.location);
-            expect(resEvent.region).to.equal(event.region);
             expect(resEvent.website).to.equal(event.website);
-            expect(resEvent.fandom).to.equal(event.fandom);
             expect(resEvent.guests.length).to.equal(event.guests.length);
           });
       });
@@ -175,7 +173,7 @@ function tearDownDb() {
             expect(res).to.be.json;
             expect(res.body).to.be.a('object');
             expect(res.body).to.include.keys(
-                'id', 'name', 'startDate', 'endDate', 'location', 'region', 'website', 'fandom');
+                'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests');
             expect(res.body.id).to.not.be.null;
             return Event.findById(res.body.id);
           })
@@ -184,9 +182,7 @@ function tearDownDb() {
             expect(event.startDate).to.equal(newEvent.startDate);
             expect(event.endDate).to.equal(newEvent.endDate);
             expect(event.location).to.equal(newEvent.location);
-            expect(event.region).to.equal(newEvent.region);
             expect(event.website).to.equal(newEvent.website);
-            expect(event.fandom).to.equal(newEvent.fandom);
           });
       });
     });

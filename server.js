@@ -150,10 +150,8 @@ app.post('/events', jwtAuth, (req, res) => {
       fandom: req.body.fandom,
       guests: req.body.guests
     })
-    .then(event => res.status(201).json({
-      events: events.map(
-        (event) => event.serialize())
-  }))
+    .then(event => res.status(201).json(event.serialize())
+  )
     .catch(err => {
       console.error(err);
       res.status(500).json({ message: 'Internal server error' });
