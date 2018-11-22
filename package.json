@@ -4,13 +4,14 @@
   "description": "App that allows users to view and contribute to a list of upcoming fan conventions in the US",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.16.4",
-    "mongoose": "^5.3.10",
-    "morgan": "^1.9.1",
     "bcryptjs": "^2.4.0",
     "body-parser": "^1.15.2",
+    "cors": "^2.8.5",
     "dotenv": "^4.0.0",
+    "express": "^4.16.4",
     "jsonwebtoken": "^8.2.0",
+    "mongoose": "^5.3.10",
+    "morgan": "^1.9.1",
     "passport": "^0.3.2",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0"

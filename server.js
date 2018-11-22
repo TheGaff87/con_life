@@ -1,23 +1,22 @@
 'use strict';
+
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const passport = require('passport');
+const cors = require('cors');
 
-// Here we use destructuring assignment with renaming so the two variables
-// called router (from ./users and ./auth) have different names
-// For example:
-// const actorSurnames = { james: "Stewart", robert: "De Niro" };
-// const { james: jimmy, robert: bobby } = actorSurnames;
-// console.log(jimmy); // Stewart - the variable name is jimmy, not james
-// console.log(bobby); // De Niro - the variable name is bobby, not robert
+mongoose.Promise = global.Promise;
+
 const { router: usersRouter } = require('./users');
 const { router: authRouter, localStrategy, jwtStrategy } = require('./auth');
 
 mongoose.Promise = global.Promise;
 
 const { PORT, DATABASE_URL } = require('./config');
+const {Event} = require('./models')
+const {User} = require('./users/models')
 
 const app = express();
 
@@ -26,8 +25,12 @@ app.use(morgan('common'));
 
 app.use(express.static('public'));
 
+app.use(express.json());
+
+app.use(cors());
+
 // CORS
-app.use(function (req, res, next) {
+/*app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
@@ -35,7 +38,7 @@ app.use(function (req, res, next) {
     return res.send(204);
   }
   next();
-});
+});*/
 
 passport.use(localStrategy);
 passport.use(jwtStrategy);
@@ -45,15 +48,175 @@ app.use('/api/auth/', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-// A protected endpoint which needs a valid JWT to access it
-app.get('/api/protected', jwtAuth, (req, res) => {
-  return res.json({
-    data: 'rosebud'
+app.get('/events', (req, res) => {
+  Event
+    .find()
+    .sort({startDate: 1})
+    .then(events => {
+      res.json({
+        events: events.map(
+          (event) => event.serialize())
+      });
+    })
+
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
+    });
+});
+
+app.get('/events/region/:term', (req, res) => {
+  Event
+    .find({region: req.params.term})
+    .sort({startDate: 1})
+    .then(events => {
+      res.json({
+        events: events.map(
+          (event) => event.serialize())
+      });
+    })
+
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({message: 'Internal server error'});
   });
 });
 
-app.use('*', (req, res) => {
-  return res.status(404).json({ message: 'Not Found' });
+app.get('/events/fandom', (req, res) => {
+  Event
+    .distinct("fandom")
+    .then(fandom => {
+      res.json({fandom});
+  })
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({message: 'Internal server error'});
+  });
+})
+
+app.get('/events/fandom/:term', (req, res) => {
+  Event
+    .find({fandom: req.params.term})
+    .sort({startDate: 1})
+    .then(events => {
+      res.json({
+        events: events.map(
+          (event) => event.serialize())
+      });
+    })
+
+  .catch(err => {
+    console.error(err);
+    res.status(500).json({message: 'Internal server error'});
+  });
+});
+
+app.get('/events/:username', jwtAuth, (req, res) =>{
+  User
+    .find({username: req.params.username})
+    .populate('events')
+    .then(user => {
+      //res.json({user: user.serialize()
+      res.json({user
+      });
+    })
+       
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({message: 'Internal server error'});
+    });
+  });
+
+app.post('/events', jwtAuth, (req, res) => {
+  const requiredFields = ['name', 'startDate', 'endDate', 'location', 'region', 'website', 'fandom'];
+  for (let i = 0; i < requiredFields.length; i++) {
+    const field = requiredFields[i];
+    if (!(field in req.body)) {
+      const message = `Missing \`${field}\` in request body`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  }
+
+  Event
+    .create({
+      name: req.body.name,
+      startDate: req.body.startDate,
+      endDate: req.body.endDate,
+      location: req.body.location,
+      region: req.body.region,
+      website: req.body.website,
+      fandom: req.body.fandom,
+      guests: req.body.guests
+    })
+    .then(event => res.status(201).json(event.serialize())
+  )
+    .catch(err => {
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
+app.put('/events/:id', jwtAuth, (req, res) => {
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    const message = (
+      `Request path name (${req.params.id}) and request body name ` +
+      `(${req.body.id}) must match`);
+    console.error(message);
+    return res.status(400).json({ message: message });
+  }
+
+  const toUpdate = {guests: req.body.guests};
+
+  Event
+    .findByIdAndUpdate(req.params.id, { $push: toUpdate })
+    .then(event => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+});
+
+app.put('/api/users/:id', jwtAuth, (req, res) => {
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    const message = (
+      `Request path name (${req.params.id}) and request body name ` +
+      `(${req.body.id}) must match`);
+    console.error(message);
+    return res.status(400).json({ message: message });
+  }
+
+  const toUpdate = {
+    events: req.body.events
+  };
+
+  User
+  .findByIdAndUpdate(req.params.id, { $push: toUpdate })
+    .then(user => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+});
+
+app.put('/events/user/remove/:id', jwtAuth, (req, res) => {
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    const message = (
+      `Request path name (${req.params.id}) and request body name ` +
+      `(${req.body.id}) must match`);
+    console.error(message);
+    return res.status(400).json({ message: message });
+  }
+  
+  User
+    .findById(req.params.id)
+    .populate('events')
+    .then(user => {
+      let newEvents = user.events.filter(event => event.id !== req.body.eventId)
+      user.events = newEvents;
+      return user.save()
+    }).then(user => res.json(user));
+})
+
+app.delete('/events/:id', jwtAuth, (req, res) => {
+  Event
+    .findByIdAndRemove(req.params.id)
+    .then(event => res.status(204).end())
+    .catch(err => res.status(500).json({ message: 'Internal server error'}));
 });
 
 // Referenced by both runServer and closeServer. closeServer
