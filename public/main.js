@@ -31,13 +31,15 @@ function displayAllEvents(data) {
 
         $(".events").append(
             `
-            <article class="js-event">
+            <article class="js-event ${i}">
                 <p class="id hidden">${events[i].id}</p>
                 <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
                 <h3>${dates}</h3>
                 <h3>${events[i].location}</h3>
-                <button type="button" class="js-guest-list"><h4>Celebrity Guests</h4>
-                <div class="hidden js-guests-list ${i}">
+                <button type="button" class="js-guest-list" data-featherlight="#guestlist${i}">
+                <h4>Celebrity Guests</h4>
+                <div class="hidden js-guests-list ${i}" id="guestlist${i}">
+                    <h4>${events[i].name} Celebrity Guests</h4>
                     <ul class="${i}"></ul>
                 </div></button>
             </article>
@@ -49,13 +51,13 @@ function displayAllEvents(data) {
     }
 }
 
-$(".events").on("click", ".js-guest-list", function(event) {
-    let currentDiv = $(this).parent().find("div");
+/*$("main").on("click", ".js-guest-list", function(event) {
+    let currentDiv = $(this).parent().find(".js-guests-list");
     $(currentDiv).toggleClass("hidden");
-})
+})*/
 
 function getAndDisplayAllEvents() {
-    $(".events").prop('hidden', false);
+    $(".events").prop("hidden", false);
     getAllEvents(displayAllEvents);
 }
 
@@ -103,6 +105,7 @@ function displayAllFandoms(data) {
 }
 
 function getAndDisplayAllFandoms() {
+    $(".fandom").html(`<option value="all">All</option>`);
     getAllFandoms(displayAllFandoms);
 }
 
@@ -126,6 +129,18 @@ $(".fandom").change(function() {
     }
 })
 
+/*$("main").on("click", "input[required]", function(event) {
+    $(this).focusout(function() {
+        if($(this).val() === "") {
+            $(this).before(`
+                <p class="required">This field is required</p>
+            `)
+        }else if ($(this).val() !== "") {
+            $(this).prev("p").html("");
+        }
+    })
+})*/
+
 //POST endpoint--signup for an account
 function createAccount(user, pass, region, callback) {
     $.ajax({
@@ -138,11 +153,22 @@ function createAccount(user, pass, region, callback) {
         type: "POST",
         dataType: "json",
         contentType: "application/json",
-        success: callback
+        success: callback,
+        error: signupError
     })
 }
 
+function signupError() {
+    $(".signup-form").before(`
+        <p class="incorrect-login">Invalid selection for username/password</p>
+    `)
+    $(".username1").val("");
+    $(".password1").val("");
+    $(".user-region").val("----")
+}
+
 let username = "";
+let userId = "";
 let token = "";
 
 function accountFollowUp() {
@@ -192,25 +218,25 @@ function postValidation(data) {
     $(".signup-div").attr("class", "hidden");
     $(".signin-div").attr("class", "hidden");
     $(".login").append(`
-        <p class="welcome">Welcome, ${username}</p>
+        <p class="welcome">Welcome, <span class="username-notice">${username}</span></p>
         <button type="button" class="signout">Sign out</button>
         <div class="add-event-div">
         <button type="button" class="add-event-button">Add an event</button>
-        <form action="/events" method="post" class="add-event-form hidden">
-    <label>Name
-    <input type="text" size="45" name="event-name" placeholder="Enter event name" required>
+        <form action="/" method="post" class="add-event-form hidden">
+    <label>Name <span class="required">(required)</span>
+    <input type="text" size="45" name="event-name" class="event-name" placeholder="Enter event name" required>
     </label>
-    <label>Start date
-        <input type="date" name="event-start-date" required>
+    <label>Start date <span class="required">(required)</span>
+        <input type="date" name="event-start-date" class="event-start-date" required>
     </label>
-    <label>End date
-        <input type="date" name="event-end-date" required>
+    <label>End date <span class="required">(required)</span>
+        <input type="date" name="event-end-date" class="event-end-date" required>
     </label>
-    <label>Location
-        <input type="text" size="45" name="event-location" placeholder="Enter event location" required>
+    <label>Location <span class="required">(required)</span>
+        <input type="text" size="45" name="event-location" class=" event-location" placeholder="Enter event location" required>
     </label>
-    <label>Region
-        <select name="event-region" required>
+    <label>Region <span class="required">(required)</span>
+        <select name="event-region" class="event-region" required>
             <option value="northeast">Northeast</option>
             <option value="south">South</option>
             <option value="midwest">Midwest</option>
@@ -218,21 +244,21 @@ function postValidation(data) {
             <option value="international">International</option>
         </select>
     </label>
-    <label>Website
-        <input type="url" size="45" name="event-website" placeholder="Enter event website" required>
+    <label>Website <span class="required">(required)</span>
+        <input type="url" size="45" name="event-website" class="event-website" placeholder="Enter event website" required>
     </label>
-    <label>Fandom
-        <input type="text" size="45" name="event-fandom" placeholder="If event is not for a particular fandom, enter 'none'" required>
+    <label>Fandom <span class="required">(required)</span>
+        <input type="text" size="45" name="event-fandom" class="event-fandom" placeholder="If event is not for a particular fandom, enter 'none'" required>
     </label>
     <label>Celebrity Guests
-        <textarea rows="4" cols="50" name="event-guests" placeholder="Enter guest names, separated by commas"></textarea>
+        <textarea rows="4" cols="50" name="event-guests" class="event-guests" placeholder="Enter guest names, separated by commas"></textarea>
     </label>
-    <button type="submit-event">Submit Event</button>
+    <button type="submit" class="submit-event">Submit Event</button>
   </form>  
   </div>
     `)
     $(".events").html("");
-    getAllEvents(displayAllEventsAuth);
+    getMyEvents(username, displayMyEvents);
 }
 
 function displayAllEventsAuth(data) {
@@ -247,14 +273,20 @@ function displayAllEventsAuth(data) {
                 <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
                 <h3>${dates}</h3>
                 <h3>${events[i].location}</h3>
-                <button type="button" class="js-guest-list"><h4>Celebrity Guests</h4>
-                <div class="hidden js-guests-list ${i}">
+                <button type="button" class="js-guest-list" data-featherlight="#guestauth${i}">
+                <h4>Celebrity Guests</h4></button>
+                <div class="hidden js-guests-list ${i} "id="guestauth${i}">
+                    <h4>${events[i].name} Celebrity Guests</h4>
                     <ul class="${i}"></ul>
-                </div>
                 <button type="button" class="add-guests">Add guests</button>
-                </button>
-            </article>
-            <article class="my-events">
+                <form action="/events" method="post" class="add-guest-form hidden">
+                <p class="id hidden">${events[i].id}</p>
+                <label>
+        <textarea rows="4" cols="50" name="new-guests" class="new-guests" placeholder="Enter guest names, separated by commas"></textarea>
+        </label>
+        <button type="submit" class="submit-guests">Submit Guests</button>
+        </form>
+        </div>
             </article>
             `
         )
@@ -262,15 +294,72 @@ function displayAllEventsAuth(data) {
             $(".events ul" + "." + i).append(`<li>${events[i].guests[a]}</li>`);
         }
         if (moment().format("YYYY/MM/DD") > events[i].startDate) {
-            $(".js-event").append(`
-                <button type="button" class="delete-event">Delete this event</button>
+            $(".events .js-event" + "." + i).append(`
+                <button type="button" class="delete-option" data-featherlight="#delete${i}">Delete this event</button>
+                <div class="delete-confirm hidden" id="delete${i}">
+                <p class="id hidden">${events[i].id}</p>
+                <p class="delete-confirm-p">Are you sure you want to delete this event?</p>
+                <button type="button" class="delete-event">Permanently delete this event</button>
+                </div>
             `)
-        }else if (moment().format("YYYY/MM/DD") < events[i].startDate) {
-            $("article" + "." + i).append(`
+        }else if (moment().format("YYYY/MM/DD") < events[i].startDate && $(".my-events p").text().indexOf(events[i].id) == -1) {
+            $(".events" + " " + "article" + "." + i).append(`
                 <button type="button" class="add-my-events">Add to My Events</button> 
             `)
         }
-    }    
+    } 
+}
+
+function getMyEvents(user, callback) {
+    $.ajax({
+        url: "/events/" + user,
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        type: "GET",
+        dataType: "json",
+        contentType: "application/json",
+        success: callback
+    })
+}
+
+function displayMyEvents(data) {
+    if (data.user[0]._id !== undefined) {
+        userId = data.user[0]._id;
+    }
+        $(".my-events").prop("hidden", false); 
+        const events = data.user[0].events;
+        for (let i = 0; i < events.length; i++) {
+            const dates = formatDates(events[i].startDate, events[i].endDate)
+    
+            $(".my-events").append(
+                `
+                <article class="js-event ${i}">
+                    <p class="id hidden">${events[i]._id}</p>
+                    <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
+                    <h3>${dates}</h3>
+                    <h3>${events[i].location}</h3>
+                    <button type="button" class="js-guest-list" data-featherlight="#myevent${i}">
+                    <h4>Celebrity Guests</h4>
+                    <div class="hidden js-guests-list ${i}" id="myevent${i}">
+                    <h4>${events[i].name} Celebrity Guests</h4>
+                        <ul class="${i}"></ul>
+                    </div>
+                    </button>
+                    <button type="button" class="remove-event-option" data-featherlight="#remove${i}">Remove from My Events</button>
+                    <div class="remove-confirm hidden" id="remove${i}">
+                    <p class="id hidden">${events[i]._id}</p>
+                    <p class="remove-confirm-p">Are you sure you want to remove this event?</p>
+                    <button type="button" class="remove-event">Remove this event</button>
+                    </div>
+                </article>
+                `
+            )
+            for (let a = 0; a < events[i].guests.length; a++) {
+                $(".my-events ul" + "." + i).append(`<li>${events[i].guests[a]}</li>`);
+          }
+    }
+    getAllEvents(displayAllEventsAuth);
 }
 
 $(".signin-button").click(function(event) {
@@ -305,15 +394,24 @@ function addEventError() {
     $(".add-event-button").after(`
         <p class="add-error">Event already exists</p>  
     `)
-    $(".add-event-form").reset();
+    $(".add-event-form").trigger("reset");
 }
 
 $(".login").on("click", ".add-event-button", function(event) {
     $(".add-event-form").toggleClass("hidden");
 });
 
+function getFandomsAndEventsAuth() {
+    getAndDisplayAllFandoms();
+    getAllEvents(displayAllEventsAuth);
+}
+
 $(".login").on("click", ".submit-event", function (event) {
     event.preventDefault();
+    if ($(".add-event-form").find("input[required]").val() === "") {
+        $(".add-event-form").before(`<p class="required enter-all"> Please enter all required fields</p>`)
+        $(".add-event-form").trigger("reset");
+    }else{
     const eventData = {
         name: $(".event-name").val(),
         startDate: moment($(".event-start-date").val()).format("YYYY/MM/DD"),
@@ -324,50 +422,130 @@ $(".login").on("click", ".submit-event", function (event) {
         fandom: $(".event-fandom").val(),
         guests: $(".event-guests").val().split(",")
     }
-    $(".add-event-form").reset();
+    $(".add-event-form").trigger("reset");
+    $(".enter-all").html("");
     $(".add-event-form").attr("class", "hidden");
-    addEvent(eventData, getAndDisplayAllFandoms);
-    getAllEvents(displayAllEventsAuth);
+    $(".events").html("")
+    addEvent(eventData, getFandomsAndEventsAuth);
+    }
 })
 
-//PUT endpoint
-$(".events").on("click", ".add-guests", function(event) {
-    let currentEl = $(this).parent();
-    $(currentEl).append(`
-    <form action="/events" method="put" class="add-event-form">
-    <label>Additional Guests
-        <textarea rows="4" cols="50" name="event-guests" placeholder="Enter guest names, separated by commas"></textarea>
-    </label>
-    <button type="submit-guests">Submit Guests</button>
-  </form>    
-    `)
+//PUT endpoint; add guests to event
+$("body").on("click", ".add-guests", function(event) {
+    const currentForm = $(this).parent().find("form");
+    console.log(currentForm);
+    $(currentForm).toggleClass("hidden"); 
 })
 
-function addGuests(event, callback) {
+function addGuests(event, data, callback) {
     $.ajax({
-        url: "/events" + event,
+        url: "/events/" + event,
+        data: JSON.stringify(data),
         headers: {
             "Authorization": "Bearer " + token
         },
-        type: "POST",
+        type: "PUT",
         dataType: "json",
         contentType: "application/json",
         success: callback
     })
 }
 
-$(".events").on("click", ".submit-guests", function(event) {
+$("body").on("click", ".submit-guests", function(event) {
     event.preventDefault();
-    const eventId = $(this).parent().find("p").attr("class", "id").val();
-    console.log(eventId);
-    addGuests(eventId, getAllEvents(displayAllEventsAuth))
+    $(".featherlight-close").click();
+    if ($(this).parent().find("textarea").val() !== "") {
+    const eventId = $(this).parent().children("p").text();
+    const currentEl = $(this).parent().find("textarea");
+    const eventData = {
+        id: eventId,
+        guests: $(currentEl).val().split(",")
+    }
+    $(".events").html("");
+    $(".my-events").html("");
+    addGuests(eventId, eventData, getAndDisplayAllFandoms);
+    getMyEvents(username, displayMyEvents);
+    }
 })
 
-//DELETE endpoint
-$(".events").on("click", ".delete-event", function(event) {
-    let currentDiv = $(this).parent()
-    $(currentDiv).remove();
-    handleApp();
+//PUT endpoint; add event to user
+function addEventUser(user, data, callback) {
+    $.ajax({
+        url: "/api/users/" + user,
+        data: JSON.stringify(data),
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        success: callback
+    })
+}
+
+$(".events").on("click", ".add-my-events", function(event) {
+    const eventId = $(this).parents("article").children("p").text();
+    const userData = {
+        id: userId,
+        events: eventId
+    };
+    addEventUser(userId, userData, reloadUserEvents);
+})
+
+function reloadUserEvents() {
+    $(".my-events").html(`<h2>My Events</h2>`);
+    $(".events").html("");
+    getMyEvents(username, displayMyEvents);
+}
+
+//PUT endpoint; remove event from user
+function removeEventUser(user, data, callback) {
+    $.ajax({
+        url: "/events/user/remove/" + user,
+        data: JSON.stringify(data),
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        type: "PUT",
+        dataType: "json",
+        contentType: "application/json",
+        success: callback
+    })
+}
+
+$("body").on("click", ".remove-event", function(event) {
+    $(".featherlight-close").click();
+    const idEvent = $(this).parent().find(".id").text();
+    const userData = {
+        id: userId,
+        eventId: idEvent
+    };
+    removeEventUser(userId, userData, reloadUserEvents)
+})
+
+//DELETE endpoint; delete event
+function deleteEvent(event, callback) {
+    $.ajax({
+        url: "/events/" + event,
+        headers: {
+            "Authorization": "Bearer " + token
+        },
+        type: "DELETE",
+        dataType: "json",
+        contentType: "application/json",
+        success: callback
+    })
+}
+
+/*$("body").on("click", ".delete-option", function(event) {
+    $(this).parent().find(".delete-confirm").removeClass("hidden");
+})*/
+
+$("body").on("click", ".delete-event", function(event) {
+    $(".featherlight-close").click();
+    const eventId = $(this).parent().find(".id").text();
+    $(".events").html("");
+    deleteEvent(eventId, getFandomsAndEventsAuth)
 })
 
 

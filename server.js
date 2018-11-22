@@ -111,14 +111,13 @@ app.get('/events/fandom/:term', (req, res) => {
   });
 });
 
-app.get('/events/:userid', jwtAuth, (req, res) =>{
+app.get('/events/:username', jwtAuth, (req, res) =>{
   User
-    .findById(req.params.userid)
+    .find({username: req.params.username})
+    .populate('events')
     .then(user => {
-      const events = user.events;
-      res.json({
-        events: events.map(
-          (event) => event.serialize())
+      //res.json({user: user.serialize()
+      res.json({user
       });
     })
        
@@ -193,6 +192,25 @@ app.put('/api/users/:id', jwtAuth, (req, res) => {
     .then(user => res.status(204).end())
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
+
+app.put('/events/user/remove/:id', jwtAuth, (req, res) => {
+  if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
+    const message = (
+      `Request path name (${req.params.id}) and request body name ` +
+      `(${req.body.id}) must match`);
+    console.error(message);
+    return res.status(400).json({ message: message });
+  }
+  
+  User
+    .findById(req.params.id)
+    .populate('events')
+    .then(user => {
+      let newEvents = user.events.filter(event => event.id !== req.body.eventId)
+      user.events = newEvents;
+      return user.save()
+    }).then(user => res.json(user));
+})
 
 app.delete('/events/:id', jwtAuth, (req, res) => {
   Event

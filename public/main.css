@@ -49,9 +49,17 @@ header {
 
 .js-event {
     border: 1px black solid;
-    display: inline-block;
+    float: left;
     margin: 1em;
     padding: 1em;
+    width: 30%;
+    height: 350px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.events {
+    overflow: hidden;
 }
 
 .hidden {
@@ -83,5 +91,36 @@ textarea {
 
 .signup-div, .signin-div {
     margin-top: 1em;
-    display: inline-block;
+    float: left;
+}
+
+.signup-div {
+    margin-right: 2em;
+}
+
+.login {
+    overflow: hidden;
+}
+
+.required, .add-error, .auth-error, .sigup-error, .incorrect-login, .delete-confirm-p {
+    color: red;
+}
+
+.username-notice {
+    font-weight: bold;
+}
+
+.js-guest-list {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.js-guests-list {
+    width: 500px;
+    text-align: center;
+}
+
+.remove-event-option, .remove-event, .delete-option, .add-my-events, .add-guests, .submit-guests, .new-guests {
+    margin-left: auto;
+    margin-right: auto;
 }

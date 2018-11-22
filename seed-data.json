@@ -1,53 +1,96 @@
 {
-    "name": "ACE Comic Con",
-    "startDate": "2019/01/11",
-    "endDate": "2019/01/13",
-    "location": "Glendale, AZ",
-    "region": "west",
-    "website": "https://aceuniverse.com/",
-    "fandom": "none",
-    "guests": [
-        "Tom Hiddleston",
-        "David Tennant",
-        "Michael Fassbender",
-        "Krysten Ritter",
-        "Charlie Cox",
-        "Tye Sheridan",
-        "Alexandra Shipp"
+    "name" : "Conageddon",
+    "startDate" : "2019/03/16",
+    "endDate" : "2019/03/17",
+    "location" : "Boston, MA",
+    "region" : "northeast",
+    "website" : "https://conageddon.com/",
+    "fandom" : "The 100",
+    "guests" : [ 
+        "Eliza Taylor", 
+        "Bob Morley", 
+        "Zach McGowan", 
+        "Tasya Teles", 
+        "Richard Harmon", 
+        "Christopher Larkin", 
+        "Chelsey Reist", 
+        "Luisa D'Oliveira", 
+        ""
     ]
 }
-        {
-    "name": "Conageddon",
-    "startDate": "2019/03/16",
-    "endDate": "2019/03/16",
-    "location": "Boston, MA",
-    "region": "northeast",
-    "website": "https://conageddon.com/",
-    "fandom": "The 100",
-    "guests": [
-        "Eliza Taylor",
-        "Bob Morley",
-        "Zach McGowan",
-        "Tasya Teles",
-        "Richard Harmon",
-        "Christopher Larkin",
-        "Chelsey Reist",
-        "Luisa D'Oliveira"
+{
+    "name" : "Awesome Con",
+    "startDate" : "2019/04/26",
+    "endDate" : "2019/04/28",
+    "location" : "Washington, DC",
+    "region" : "south",
+    "website" : "http://awesome-con.com",
+    "fandom" : "none",
+    "guests" : [ 
+        "Brent Spiner", 
+        "Jon Bernthal", 
+        "Marina Sirtis", 
+        "Tim Curry", 
+        "Val Kilmer", 
+        "Michael Biehn"
     ]
 }
-        {
-    "name": "Awesome Con",
-    "startDate": "2019/04/26",
-    "endDate": "2019/04/28",
-    "location": "Washington, DC",
-    "region": "south",
-    "website": "http://awesome-con.com",
-    "fandom": "none",
-    "guests": [
-        "Brent Spiner",
-        "Jon Bernthal",
-        "Marina Sirtis",
-        "Tim Curry",
-        "Val Kilmer"
+{
+    "name" : "ACE Comic Con",
+    "startDate" : "2019/01/11",
+    "endDate" : "2019/01/13",
+    "location" : "Glendale, AZ",
+    "region" : "west",
+    "website" : "https://aceuniverse.com/",
+    "fandom" : "none",
+    "guests" : [ 
+        "Tom Hiddleston", 
+        "David Tennant", 
+        "Michael Fassbender", 
+        "Krysten Ritter", 
+        "Charlie Cox", 
+        "Tye Sheridan", 
+        "Alexandra Shipp", 
+        "Taron Egerton"
     ]
+}
+{
+    "guests" : [ 
+        "Michael Shanks", 
+        "Amanda Tapping", 
+        "Joe Flanigan", 
+        "Torri Higginson", 
+        "Paul McGillion", 
+        "Gary Jones", 
+        "Tony Amendola", 
+        "Connor Trinneer"
+    ],
+    "name" : "Gateway: A 25th Anniversary Salute to STARGATE",
+    "startDate" : "2019/06/21",
+    "endDate" : "2019/06/23",
+    "location" : "Chicago, IL",
+    "region" : "midwest",
+    "website" : "https://www.creationent.com/cal/gateway25.htm",
+    "fandom" : "Stargate",
+    "__v" : 0
+}
+{
+    "guests" : [ 
+        "DB Woodside", 
+        " Kevin Alejandro", 
+        "Matt Ryan", 
+        "", 
+        "", 
+        "Lauren German", 
+        " Tricia Helfer", 
+        "Tom Ellis"
+    ],
+    "name" : "Lux",
+    "startDate" : "2019/01/18",
+    "endDate" : "2019/01/20",
+    "location" : "Brighton, UK",
+    "region" : "international",
+    "website" : "https://www.rostercon.com/en/event-convention/lux-en",
+    "fandom" : "Lucifer",
+    "__v" : 0
 }

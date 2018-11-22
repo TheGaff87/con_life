@@ -20,15 +20,11 @@ const UserSchema = mongoose.Schema({
   events: [{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}],
 });
 
-UserSchema.pre('findById', function(next) {
-  this.populate('event');
-  next();
-})
-
 UserSchema.methods.serialize = function() {
   return {
-    username: this.username || '',
-    region: this.region || '',
+    id: this._id,
+    username: this.username,
+    region: this.region,
     events: this.events || ''
   };
 };
