@@ -49,13 +49,10 @@ header {
 
 .js-event {
     border: 1px black solid;
-    float: left;
     margin: 1em;
     padding: 1em;
-    width: 30%;
     height: 350px;
     text-align: center;
-    vertical-align: middle;
 }
 
 .events {
@@ -123,4 +120,18 @@ textarea {
 .remove-event-option, .remove-event, .delete-option, .add-my-events, .add-guests, .submit-guests, .new-guests {
     margin-left: auto;
     margin-right: auto;
+}
+
+@media only screen and (min-width: 560px) {
+    .js-event {
+        float: left;
+        width: 45%;
+    }
+}
+
+@media only screen and (min-width: 1080px) {
+    .js-event {
+        float: left;
+        width: 30%;
+    }
 }

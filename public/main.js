@@ -268,7 +268,7 @@ function displayAllEventsAuth(data) {
 
         $(".events").append(
             `
-            <article class="js-event ${i}">
+            <article class="js-event ${i} col-12">
                 <p class="id hidden">${events[i].id}</p>
                 <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
                 <h3>${dates}</h3>
