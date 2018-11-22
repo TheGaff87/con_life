@@ -327,8 +327,10 @@ function displayMyEvents(data) {
     if (data.user[0]._id !== undefined) {
         userId = data.user[0]._id;
     }
-        $(".my-events").prop("hidden", false); 
         const events = data.user[0].events;
+        if (events.length > 0) {
+            $(".my-events").prop("hidden", false); 
+        }
         for (let i = 0; i < events.length; i++) {
             const dates = formatDates(events[i].startDate, events[i].endDate)
     
