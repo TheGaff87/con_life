@@ -495,7 +495,11 @@ $(".events").on("click", ".add-my-events", function(event) {
 })
 
 function reloadUserEvents() {
-    $(".my-events").html(`<h2>My Events</h2>`);
+    if($(".my-events").children().length > 1) {
+        $(".my-events").html(`<h2>My Events</h2>`);
+    }else{
+        $(".my-events").html("");
+    }
     $(".events").html("");
     getMyEvents(username, displayMyEvents);
 }
