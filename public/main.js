@@ -327,9 +327,10 @@ function displayMyEvents(data) {
     if (data.user[0]._id !== undefined) {
         userId = data.user[0]._id;
     }
+        $(".my-events").prop("hidden", false);
         const events = data.user[0].events;
         if (events.length > 0) {
-            $(".my-events").prop("hidden", false); 
+            $(".my-events").append(`<h2 class="my-events-h2">My Events</h2>`)
         }
         for (let i = 0; i < events.length; i++) {
             const dates = formatDates(events[i].startDate, events[i].endDate)
@@ -495,11 +496,7 @@ $(".events").on("click", ".add-my-events", function(event) {
 })
 
 function reloadUserEvents() {
-    if($(".my-events").children().length > 1) {
-        $(".my-events").html(`<h2>My Events</h2>`);
-    }else{
-        $(".my-events").html("");
-    }
+    $(".my-events").html("");
     $(".events").html("");
     getMyEvents(username, displayMyEvents);
 }
