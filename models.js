@@ -40,6 +40,8 @@ eventSchema.methods.serialize = function() {
         endDate: this.endDate,
         location: this.location,
         website: this.website,
+        region: this.region,
+        fandom: this.fandom,
         guests: this.guests
     }
 }

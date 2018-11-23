@@ -103,7 +103,7 @@ function tearDownDb() {
       return closeServer();
     });
   
-    describe('GET endpoint', function() {
+    describe('GET /events', function() {
   
       it('should return all events in database', function() {
         let res;
@@ -135,7 +135,7 @@ function tearDownDb() {
             res.body.events.forEach(function(event) {
               expect(event).to.be.a('object');
               expect(event).to.include.keys(
-                'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests');
+                'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests', 'fandom', 'region');
             });
             resEvent = res.body.events[0];
             return Event.findById(resEvent.id);
@@ -146,14 +146,114 @@ function tearDownDb() {
             expect(resEvent.name).to.equal(event.name);
             expect(resEvent.startDate).to.equal(event.startDate);
             expect(resEvent.endDate).to.equal(event.endDate);
+            expect(resEvent.region).to.equal(event.region);
+            expect(resEvent.fandom).to.equal(event.fandom);
             expect(resEvent.location).to.equal(event.location);
             expect(resEvent.website).to.equal(event.website);
             expect(resEvent.guests.length).to.equal(event.guests.length);
           });
       });
     });
+
+    describe('GET /events/region/:region', function() {
   
-    describe('POST endpoint', function() {
+        it('should return all events in selected region', function() {
+          let res;
+          return chai.request(app)
+            .get('/events/region/northeast')
+            .then(function(_res) {
+              res = _res;
+              expect(res).to.have.status(200);
+              expect(res.body.events).to.have.lengthOf.at.least(1);
+            })
+        });
+    
+    
+        it('should return events with correct fields', function() {
+    
+          let resEvent;
+          let selectedRegion = "northeast";
+          return chai.request(app)
+            .get('/events/region/' + selectedRegion)
+            .then(function(res) {
+              expect(res).to.have.status(200);
+              expect(res).to.be.json;
+              expect(res.body.events).to.be.a('array');
+              expect(res.body.events).to.have.lengthOf.at.least(1);
+    
+              res.body.events.forEach(function(event) {
+                expect(event).to.be.a('object');
+                expect(event).to.include.keys(
+                  'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests', 'fandom', 'region');
+              });
+              resEvent = res.body.events[0];
+              return Event.findById(resEvent.id);
+            })
+            .then(function(event) {
+    
+              expect(resEvent.id).to.equal(event.id);
+              expect(resEvent.name).to.equal(event.name);
+              expect(resEvent.startDate).to.equal(event.startDate);
+              expect(resEvent.endDate).to.equal(event.endDate);
+              expect(resEvent.location).to.equal(event.location);
+              expect(resEvent.region).to.equal(selectedRegion);
+              expect(resEvent.fandom).to.equal(event.fandom);
+              expect(resEvent.website).to.equal(event.website);
+              expect(resEvent.guests.length).to.equal(event.guests.length);
+            });
+        });
+      });
+
+      describe('GET /events/fandom/:fandom', function() {
+  
+        it('should return all events for selected fandom', function() {
+          let res;
+          return chai.request(app)
+            .get('/events/fandom/The 100')
+            .then(function(_res) {
+              res = _res;
+              expect(res).to.have.status(200);
+              expect(res.body.events).to.have.lengthOf.at.least(1);
+            })
+        });
+    
+    
+        it('should return events with correct fields', function() {
+    
+          let resEvent;
+          let selectedFandom = 'The 100';
+          return chai.request(app)
+            .get('/events/fandom/' + selectedFandom)
+            .then(function(res) {
+              expect(res).to.have.status(200);
+              expect(res).to.be.json;
+              expect(res.body.events).to.be.a('array');
+              expect(res.body.events).to.have.lengthOf.at.least(1);
+    
+              res.body.events.forEach(function(event) {
+                expect(event).to.be.a('object');
+                expect(event).to.include.keys(
+                  'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests', 'fandom', 'region');
+              });
+              resEvent = res.body.events[0];
+              return Event.findById(resEvent.id);
+            })
+            .then(function(event) {
+    
+              expect(resEvent.id).to.equal(event.id);
+              expect(resEvent.name).to.equal(event.name);
+              expect(resEvent.startDate).to.equal(event.startDate);
+              expect(resEvent.endDate).to.equal(event.endDate);
+              expect(resEvent.location).to.equal(event.location);
+              expect(resEvent.region).to.equal(event.region);
+              expect(resEvent.fandom).to.equal(selectedFandom);
+              expect(resEvent.website).to.equal(event.website);
+              expect(resEvent.guests.length).to.equal(event.guests.length);
+            });
+        });
+      });
+  
+    describe('POST /events', function() {
       it('should add a new event', function() {
   
         const newEvent = {
@@ -175,7 +275,7 @@ function tearDownDb() {
             expect(res).to.be.json;
             expect(res.body).to.be.a('object');
             expect(res.body).to.include.keys(
-                'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests');
+                'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests', 'fandom', 'region');
             expect(res.body.id).to.not.be.null;
             return Event.findById(res.body.id);
           })
@@ -185,11 +285,13 @@ function tearDownDb() {
             expect(event.endDate).to.equal(newEvent.endDate);
             expect(event.location).to.equal(newEvent.location);
             expect(event.website).to.equal(newEvent.website);
+            expect(event.region).to.equal(newEvent.region);
+            expect(event.fandom).to.equal(newEvent.fandom);
           });
       });
     });
   
-    describe('PUT endpoint', function() {
+    describe('PUT /events/eventid', function() {
   
       it('should update fields you send over', function() {
         const updateData = {
@@ -217,7 +319,7 @@ function tearDownDb() {
       });
     });
   
-    describe('DELETE endpoint', function() {
+    describe('DELETE /events/:eventid', function() {
       
       it('delete an event by id', function() {
   

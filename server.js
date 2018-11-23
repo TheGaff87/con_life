@@ -116,7 +116,6 @@ app.get('/events/:username', jwtAuth, (req, res) =>{
     .find({username: req.params.username})
     .populate('events')
     .then(user => {
-      //res.json({user: user.serialize()
       res.json({user
       });
     })
