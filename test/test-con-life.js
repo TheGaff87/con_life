@@ -74,6 +74,8 @@ function seedBlogData() {
     return Event.insertMany(seedData);
 }
 
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6Im5vcnRoZWFzdCIsImV2ZW50cyI6W119LCJpYXQiOjE1NDI2NjY2MzQsImV4cCI6MTU0MzI3MTQzNCwic3ViIjoidGVzdCJ9.URhqjQfMhH3CqDe9XBOTxjcINocxRq1VIYnXuzXFMiw'
+
 function tearDownDb() {
     console.warn('Deleting database');
     return mongoose.connection.dropDatabase();
@@ -166,7 +168,7 @@ function tearDownDb() {
   
         return chai.request(app)
           .post('/events')
-          .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6Im5vcnRoZWFzdCIsImV2ZW50cyI6W119LCJpYXQiOjE1NDI2NjY2MzQsImV4cCI6MTU0MzI3MTQzNCwic3ViIjoidGVzdCJ9.URhqjQfMhH3CqDe9XBOTxjcINocxRq1VIYnXuzXFMiw')
+          .set('Authorization', token)
           .send(newEvent)
           .then(function(res) {
             expect(res).to.have.status(201);
@@ -201,7 +203,7 @@ function tearDownDb() {
   
             return chai.request(app)
               .put(`/events/${event.id}`)
-              .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6Im5vcnRoZWFzdCIsImV2ZW50cyI6W119LCJpYXQiOjE1NDI2NjY2MzQsImV4cCI6MTU0MzI3MTQzNCwic3ViIjoidGVzdCJ9.URhqjQfMhH3CqDe9XBOTxjcINocxRq1VIYnXuzXFMiw')
+              .set('Authorization', token)
               .send(updateData);
           })
           .then(function(res) {
@@ -226,7 +228,7 @@ function tearDownDb() {
           .then(function(_event) {
             event = _event;
             return chai.request(app).delete(`/events/${event.id}`)
-            .set('Authorization', 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6Im5vcnRoZWFzdCIsImV2ZW50cyI6W119LCJpYXQiOjE1NDI2NjY2MzQsImV4cCI6MTU0MzI3MTQzNCwic3ViIjoidGVzdCJ9.URhqjQfMhH3CqDe9XBOTxjcINocxRq1VIYnXuzXFMiw')
+            .set('Authorization', token)
           })
           .then(function(res) {
             expect(res).to.have.status(204);
