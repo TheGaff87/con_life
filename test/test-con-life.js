@@ -6,16 +6,16 @@ const mongoose = require('mongoose');
 
 const expect = chai.expect;
 
+const {User} = require('../users/models')
 const {Event} = require('../models');
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 
 chai.use(chaiHttp);
 
-function seedBlogData() {
-    const seedData = [
+function seedData() {
+    const eventData = [
         {
-            'id': '5beb5ca5d2eb213ed2acbaac',
             'name': 'ACE Comic Con',
             'startDate': '01/11/2019',
             'endDate': '01/13/2019',
@@ -34,7 +34,6 @@ function seedBlogData() {
             ]
         },
         {
-            'id': '5beb5ca5d2eb213ed2acbaaa',
             'name': 'Conageddon',
             'startDate': '03/16/2019',
             'endDate': '03/17/2019',
@@ -54,7 +53,6 @@ function seedBlogData() {
             ]
         },
         {
-            'id': '5beb5ca5d2eb213ed2acbaab',
             'name': 'Awesome Con',
             'startDate': '04/26/2019 - 04/28/2019',
             'endDate': '04/28/2019',
@@ -71,7 +69,13 @@ function seedBlogData() {
             ]
         }
     ];
-    return Event.insertMany(seedData);
+    const userData = {
+        'username': 'user1',
+        'password' : '$2a$10$wJ0k.ZJOpJi56vLH8/cdwOmnFVbXeZKhUUT3iG8S3gAVFju7GkEIW',
+        'region': 'northeast',
+        'events': []
+    };
+    return User.insertMany(userData), Event.insertMany(eventData);
 }
 
 const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6Im5vcnRoZWFzdCIsImV2ZW50cyI6W119LCJpYXQiOjE1NDI2NjY2MzQsImV4cCI6MTU0MzI3MTQzNCwic3ViIjoidGVzdCJ9.URhqjQfMhH3CqDe9XBOTxjcINocxRq1VIYnXuzXFMiw'
@@ -83,16 +87,12 @@ function tearDownDb() {
   
   describe('Con Life API', function() {
   
-    // we need each of these hook functions to return a promise
-    // otherwise we'd need to call a `done` callback. `runServer`,
-    // `seedRestaurantData` and `tearDownDb` each return a promise,
-    // so we return the value returned by these function calls.
     before(function() {
       return runServer(TEST_DATABASE_URL);
     });
   
     beforeEach(function() {
-      return seedBlogData();
+      return seedData();
     });
   
     afterEach(function() {
@@ -103,6 +103,7 @@ function tearDownDb() {
       return closeServer();
     });
   
+    //event-related endpoints
     describe('GET /events', function() {
   
       it('should return all events in database', function() {
@@ -341,5 +342,116 @@ function tearDownDb() {
           });
       });
     });
-  });
+
+    //tests for user-specific event endpoints
+    describe('GET /events/:userid', function() {
   
+        it('should return document for user', function() {
+          let res;
+          let username = 'user1'
+          return chai.request(app)
+            .get('/events/' + username)
+            .set('Authorization', token)
+            .then(function(_res) {
+              res = _res;
+              expect(res).to.have.status(200);
+              expect(res.body.user).to.have.lengthOf.at.least(1);
+            })
+        });
+    
+    
+        it('should return correct fields for user', function() {
+        let username = 'user1';
+          return chai.request(app)
+            .get('/events/' + username)
+            .set('Authorization', token)
+            .then(function(res) {
+              expect(res).to.have.status(200);
+              expect(res).to.be.json;
+              expect(res.body.user).to.be.a('array');
+              //password is properly disguised
+              expect(res.body.user[0]).to.include.keys('events', '_id', 'username', 'password', 'region', '__v')
+              expect(res.body.user[0].username).to.equal(username);
+              
+              if(res.body.user[0].events.length > 0) {
+    
+              res.body.user[0].events.forEach(function(event) {
+                expect(event).to.be.a('object');
+                expect(event).to.include.keys(
+                  'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests', 'fandom', 'region');
+              });
+            }
+            })
+        });
+    })
+
+      describe('PUT /api/users/:userId', function () {
+
+          it('should add event to user', function () {
+              const updateData = {};
+
+              return Event
+                  .findOne()
+                  .then(function (event) {
+                      updateData.events = event.id;
+
+                return User
+                    .findOne()
+                    .then(function (user) {
+                        updateData.id = user._id;
+                        const userId = user._id;
+
+                      return chai.request(app)
+                          .put(`/api/users/${userId}`)
+                          .set('Authorization', token)
+                          .send(updateData)
+                  })
+                })
+
+                  .then(function (res) {
+                      expect(res).to.have.status(204);
+                  });
+          });
+      })
+          describe('PUT /events/user/remove/:userId', function() {
+  
+            it('should remove event from user and return updated user document', function() {
+                const updateData = {};
+
+                return Event
+                    .findOne()
+                    .then(function (event) {
+                        updateData.eventId = event.id;
+  
+                  return User
+                      .findOne()
+                      .then(function (user) {
+                          updateData.id = user._id;
+                          const userId = user._id;
+  
+                        return chai.request(app)
+                            .put(`/events/user/remove/${userId}`)
+                            .set('Authorization', token)
+                            .send(updateData)
+                    })
+                  })
+        
+                .then(function(res) {
+                    expect(res).to.have.status(200);
+                    expect(res).to.be.json;
+                    expect(res.body.events).to.be.a('array');
+                    //password is properly disguised
+                    expect(res.body).to.include.keys('events', '_id', 'username', 'password', 'region', '__v')
+                    
+                    if(res.body.events.length > 0) {
+          
+                    res.body.events.forEach(function(event) {
+                      expect(event).to.be.a('object');
+                      expect(event).to.include.keys(
+                        'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests', 'fandom', 'region');
+                    });
+                    }
+                })
+          });
+    })
+})
