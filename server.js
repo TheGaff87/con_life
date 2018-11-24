@@ -29,17 +29,6 @@ app.use(express.json());
 
 app.use(cors());
 
-// CORS
-/*app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
-  if (req.method === 'OPTIONS') {
-    return res.send(204);
-  }
-  next();
-});*/
-
 passport.use(localStrategy);
 passport.use(jwtStrategy);
 
@@ -115,9 +104,9 @@ app.get('/events/:username', jwtAuth, (req, res) =>{
   User
     .find({username: req.params.username})
     .populate('events')
+    .sort({'events.startDate': 1})
     .then(user => {
-      //res.json({user: user.serialize()
-      res.json({user
+      res.json({ user
       });
     })
        
@@ -205,11 +194,13 @@ app.put('/events/user/remove/:id', jwtAuth, (req, res) => {
   User
     .findById(req.params.id)
     .populate('events')
+    .sort({startDate: 1})
     .then(user => {
       let newEvents = user.events.filter(event => event.id !== req.body.eventId)
       user.events = newEvents;
       return user.save()
-    }).then(user => res.json(user));
+    })
+    .then(user => res.json(user));
 })
 
 app.delete('/events/:id', jwtAuth, (req, res) => {
