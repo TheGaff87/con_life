@@ -33,15 +33,15 @@ function displayAllEvents(data) {
             `
             <article class="js-event ${i}">
                 <p class="id hidden">${events[i].id}</p>
-                <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
+                <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a><img src="/images/external_link.png" alt="Open external by Raphaël Buquet from the Noun Project" class="external-link"></h3>
                 <h3>${dates}</h3>
                 <h3>${events[i].location}</h3>
                 <button type="button" class="js-guest-list" data-featherlight="#guestlist${i}">
-                <h4>Celebrity Guests</h4>
+                Celebrity Guests</button>
                 <div class="hidden js-guests-list ${i}" id="guestlist${i}">
                     <h4>${events[i].name} Celebrity Guests</h4>
                     <ul class="${i}"></ul>
-                </div></button>
+                </div>
             </article>
             `
         )
@@ -162,6 +162,8 @@ function signupError() {
     $(".signup-form").before(`
         <p class="incorrect-login">Invalid selection for username/password</p>
     `)
+    $(".incorrect-login").fadeOut(5000, function() {
+    })
     $(".username1").val("");
     $(".password1").val("");
     $(".user-region").val("----")
@@ -172,6 +174,9 @@ let userId = "";
 let token = "";
 
 function accountFollowUp() {
+    $(".signup-form").before(`<p class="signup-confirm">You successfully created a new account. Please sign in.</p>`)
+    $(".signup-confirm").fadeOut(5000, function() {
+    })
     $(".username1").val("");
     $(".password1").val("");
     $(".user-region").val("----");
@@ -211,7 +216,7 @@ function validateAccount(user, pass, callback) {
 }
 
 function postValidation(data) {
-    token = data.authToken;
+    token = data.authToken
     $(".username2").val("");
     $(".password2").val("");
     $(".signin-form").attr("class", "hidden");
@@ -262,19 +267,19 @@ function postValidation(data) {
 }
 
 function displayAllEventsAuth(data) {
+    $(".my-events-link").removeClass("hidden");
     const events = data.events;
     for (let i = 0; i < events.length; i++) {
         const dates = formatDates(events[i].startDate, events[i].endDate)
-
         $(".events").append(
             `
             <article class="js-event ${i} col-12">
                 <p class="id hidden">${events[i].id}</p>
-                <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
+                <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a><img src="/images/external_link.png" alt="Open external by Raphaël Buquet from the Noun Project" class="external-link"></h3>
                 <h3>${dates}</h3>
                 <h3>${events[i].location}</h3>
                 <button type="button" class="js-guest-list" data-featherlight="#guestauth${i}">
-                <h4>Celebrity Guests</h4></button>
+                Celebrity Guests</button>
                 <div class="hidden js-guests-list ${i} "id="guestauth${i}">
                     <h4>${events[i].name} Celebrity Guests</h4>
                     <ul class="${i}"></ul>
@@ -330,7 +335,7 @@ function displayMyEvents(data) {
         $(".my-events").prop("hidden", false);
         const events = data.user[0].events;
         if (events.length > 0) {
-            $(".my-events").append(`<h2 class="my-events-h2">My Events</h2>`)
+            $(".my-events").append(`<h2 class="my-events-h2">My Saved Events</h2>`)
         }
         for (let i = 0; i < events.length; i++) {
             const dates = formatDates(events[i].startDate, events[i].endDate)
@@ -339,16 +344,15 @@ function displayMyEvents(data) {
                 `
                 <article class="js-event ${i}">
                     <p class="id hidden">${events[i]._id}</p>
-                    <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
+                    <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a><img src="/images/external_link.png" alt="Open external by Raphaël Buquet from the Noun Project" class="external-link"></h3>
                     <h3>${dates}</h3>
                     <h3>${events[i].location}</h3>
                     <button type="button" class="js-guest-list" data-featherlight="#myevent${i}">
-                    <h4>Celebrity Guests</h4>
+                    Celebrity Guests</button>
                     <div class="hidden js-guests-list ${i}" id="myevent${i}">
                     <h4>${events[i].name} Celebrity Guests</h4>
                         <ul class="${i}"></ul>
                     </div>
-                    </button>
                     <button type="button" class="remove-event-option" data-featherlight="#remove${i}">Remove from My Events</button>
                     <div class="remove-confirm hidden" id="remove${i}">
                     <p class="id hidden">${events[i]._id}</p>
@@ -393,6 +397,34 @@ function addEvent(data, callback) {
     })
 }
 
+$(".login").on("focusout", ".event-start-date", function(event) {
+    if (moment($(".event-start-date").val()).format("YYYY/MM/DD") < moment().format("YYYY/MM/DD")) {
+        $(".event-start-date").before(`
+            <p class="start-date-error">Start date must be in the future</p>   
+        `)
+        $(".start-date-error").fadeOut(5000, function() {
+        })
+    }else{
+        $(".event-start-date").prev("p").html("");
+    }
+})
+
+$(".login").on("focusout", ".event-end-date", function(event) {
+    if (moment($(".event-end-date").val()).format("YYYY/MM/DD") < moment($(".event-start-date").val()).format("YYYY/MM/DD")) {
+        $(".event-end-date").before(`
+            <p class="end-date-error">End date must be after start date</p>   
+        `)
+        $(".end-date-error").fadeOut(5000, function() {
+        })
+    }else if (moment($(".event-end-date").val()).format("YYYY/MM/DD") < moment().format("YYYY/MM/DD")) {
+        $(".event-end-date").before(`
+            <p class="end-date-error">End date must be in the future</p> 
+        `)
+        $(".end-date-error").fadeOut(5000, function() {
+        })
+    }
+})
+
 function addEventError() {
     $(".add-event-button").after(`
         <p class="add-error">Event already exists</p>  
@@ -411,9 +443,18 @@ function getFandomsAndEventsAuth() {
 
 $(".login").on("click", ".submit-event", function (event) {
     event.preventDefault();
-    if ($(".add-event-form").find("input[required]").val() === "") {
-        $(".add-event-form").before(`<p class="required enter-all"> Please enter all required fields</p>`)
-        $(".add-event-form").trigger("reset");
+    const fields = $(".add-event-form").find("input[required]");
+    let submit = true;
+    for (let i = 0; i < fields.length; i++) {
+        console.log(`fields[i].val() is ${$(fields[i]).val()})`)
+        if ($(fields[i]).val() === "") {
+            submit = false;
+        }else{
+        }
+    }
+
+    if (submit == false || moment($(".event-start-date").val()).format("YYYY/MM/DD") < moment().format("YYYY/MM/DD") || moment($(".event-end-date").val()).format("YYYY/MM/DD") < moment($(".event-start-date").val()).format("YYYY/MM/DD") || moment($(".event-end-date").val()).format("YYYY/MM/DD") < moment().format("YYYY/MM/DD")) {
+        $(".add-event-form").before(`<p class="required-enter-all"> Please enter all required fields</p>`)
     }else{
     const eventData = {
         name: $(".event-name").val(),
@@ -426,8 +467,10 @@ $(".login").on("click", ".submit-event", function (event) {
         guests: $(".event-guests").val().split(",")
     }
     $(".add-event-form").trigger("reset");
+    $(".add-event-form").before(`<p class="event-added">Event added!</p>`)
+    $(".event-added").fadeOut(5000, function() {
+    })
     $(".enter-all").html("");
-    $(".add-event-form").attr("class", "hidden");
     $(".events").html("")
     addEvent(eventData, getFandomsAndEventsAuth);
     }
