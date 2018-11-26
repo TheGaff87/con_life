@@ -50,8 +50,8 @@ header {
 .js-event {
     border: 1px black solid;
     margin: 1em;
-    padding: 1em;
     height: 350px;
+    padding-top: 1em;
     text-align: center;
 }
 
@@ -99,7 +99,7 @@ textarea {
     overflow: hidden;
 }
 
-.required, .add-error, .auth-error, .sigup-error, .incorrect-login, .delete-confirm-p, .start-date-error, .end-date-error, .required-enter-all {
+.required, .add-error, .auth-error, .signup-error, .incorrect-login, .delete-confirm-p, .start-date-error, .end-date-error, .required-enter-all {
     color: red;
 }
 
@@ -110,11 +110,6 @@ textarea {
 .js-guest-list {
     margin-left: auto;
     margin-right: auto;
-}
-
-.js-guests-list {
-    width: 500px;
-    text-align: center;
 }
 
 .remove-event-option, .remove-event, .delete-option, .add-my-events, .add-guests, .submit-guests, .new-guests {
@@ -131,7 +126,11 @@ textarea {
 @media only screen and (min-width: 710px) {
     .js-event {
         float: left;
-        width: 45%;
+        width: 40%;
+    }
+    .js-guests-list {
+        width: 500px;
+        text-align: center;
     }
 }
 
