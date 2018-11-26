@@ -195,6 +195,8 @@ function authError() {
     $(".signin-form").before(`
         <p class="incorrect-login">Incorrect username/password</p>
     `)
+    $(".incorrect-login").fadeOut(5000, function() {
+    })
     $(".username2").val("");
     $(".password2").val("");
 }
@@ -229,7 +231,7 @@ function postValidation(data) {
         <button type="button" class="add-event-button">Add an event</button>
         <form action="/" method="post" class="add-event-form hidden">
     <label>Name <span class="required">(required)</span>
-    <input type="text" size="45" name="event-name" class="event-name" placeholder="Enter event name" required>
+    <input type="text" size="30" name="event-name" class="event-name" placeholder="Enter event name" required>
     </label>
     <label>Start date <span class="required">(required)</span>
         <input type="date" name="event-start-date" class="event-start-date" required>
@@ -238,7 +240,7 @@ function postValidation(data) {
         <input type="date" name="event-end-date" class="event-end-date" required>
     </label>
     <label>Location <span class="required">(required)</span>
-        <input type="text" size="45" name="event-location" class=" event-location" placeholder="Enter event location" required>
+        <input type="text" size="30" name="event-location" class=" event-location" placeholder="Enter event location" required>
     </label>
     <label>Region <span class="required">(required)</span>
         <select name="event-region" class="event-region" required>
@@ -250,13 +252,13 @@ function postValidation(data) {
         </select>
     </label>
     <label>Website <span class="required">(required)</span>
-        <input type="url" size="45" name="event-website" class="event-website" placeholder="Enter event website" required>
+        <input type="url" size="30" name="event-website" class="event-website" placeholder="Enter event website" required>
     </label>
     <label>Fandom <span class="required">(required)</span>
-        <input type="text" size="45" name="event-fandom" class="event-fandom" placeholder="If event is not for a particular fandom, enter 'none'" required>
+        <input type="text" size="30" name="event-fandom" class="event-fandom" placeholder="If no fandom, enter 'none' required>
     </label>
     <label>Celebrity Guests
-        <textarea rows="4" cols="50" name="event-guests" class="event-guests" placeholder="Enter guest names, separated by commas"></textarea>
+        <textarea rows="4" cols="40" name="event-guests" class="event-guests" placeholder="Enter guest names, separated by commas"></textarea>
     </label>
     <button type="submit" class="submit-event">Submit Event</button>
   </form>  
@@ -273,7 +275,7 @@ function displayAllEventsAuth(data) {
         const dates = formatDates(events[i].startDate, events[i].endDate)
         $(".events").append(
             `
-            <article class="js-event ${i} col-12">
+            <article class="js-event ${i}">
                 <p class="id hidden">${events[i].id}</p>
                 <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a><img src="/images/external_link.png" alt="Open external by Raphaël Buquet from the Noun Project" class="external-link"></h3>
                 <h3>${dates}</h3>
