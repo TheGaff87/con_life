@@ -72,7 +72,6 @@ function seedData() {
     const userData = {
         'username': 'user1',
         'password' : '$2a$10$wJ0k.ZJOpJi56vLH8/cdwOmnFVbXeZKhUUT3iG8S3gAVFju7GkEIW',
-        'region': 'northeast',
         'events': []
     };
     return User.insertMany(userData), Event.insertMany(eventData);
@@ -370,7 +369,7 @@ function tearDownDb() {
               expect(res).to.be.json;
               expect(res.body.user).to.be.a('array');
               //password is properly disguised
-              expect(res.body.user[0]).to.include.keys('events', '_id', 'username', 'password', 'region', '__v')
+              expect(res.body.user[0]).to.include.keys('events', '_id', 'username', 'password', '__v')
               expect(res.body.user[0].username).to.equal(username);
               
               if(res.body.user[0].events.length > 0) {
@@ -441,7 +440,7 @@ function tearDownDb() {
                     expect(res).to.be.json;
                     expect(res.body.events).to.be.a('array');
                     //password is properly disguised
-                    expect(res.body).to.include.keys('events', '_id', 'username', 'password', 'region', '__v')
+                    expect(res.body).to.include.keys('events', '_id', 'username', 'password', '__v')
                     
                     if(res.body.events.length > 0) {
           

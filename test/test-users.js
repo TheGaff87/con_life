@@ -14,10 +14,8 @@ chai.use(chaiHttp);
 describe('/api/user', function () {
   const username = 'exampleUser';
   const password = 'examplePass';
-  const region = 'regionA'
   const usernameB = 'exampleUserB';
   const passwordB = 'examplePassB';
-  const regionB = 'regionB';
 
   before(function () {
     return runServer(TEST_DATABASE_URL);
@@ -40,8 +38,7 @@ describe('/api/user', function () {
           .request(app)
           .post('/api/users')
           .send({
-            password,
-            region
+            password
           })
           .then(res => {
             expect(res).to.have.status(422);
@@ -55,8 +52,7 @@ describe('/api/user', function () {
           .request(app)
           .post('/api/users')
           .send({
-            username,
-            region
+            username
           })
           .then(res => {
             expect(res).to.have.status(422);
@@ -71,8 +67,7 @@ describe('/api/user', function () {
           .post('/api/users')
           .send({
             username: 1234,
-            password,
-            region
+            password
           })
           .then(res => {
             expect(res).to.have.status(422);
@@ -89,8 +84,7 @@ describe('/api/user', function () {
           .post('/api/users')
           .send({
             username,
-            password: 1234,
-            region
+            password: 1234
           })
           .then(res => {
             expect(res).to.have.status(422);
@@ -124,8 +118,7 @@ describe('/api/user', function () {
           .post('/api/users')
           .send({
             username,
-            password: ` ${password} `,
-            region
+            password: ` ${password} `
           })
           .then(res => {
             expect(res).to.have.status(422);
@@ -159,8 +152,7 @@ describe('/api/user', function () {
           .post('/api/users')
           .send({
             username,
-            password: '1234',
-            region
+            password: '1234'
           })
           .then(res => {
             expect(res).to.have.status(422);
@@ -177,8 +169,7 @@ describe('/api/user', function () {
           .post('/api/users')
           .send({
             username,
-            password: new Array(73).fill('a').join(''),
-            region
+            password: new Array(73).fill('a').join('')
           })
           .then(res => {
             expect(res).to.have.status(422);
@@ -193,15 +184,13 @@ describe('/api/user', function () {
         // Create an initial user
         return User.create({
           username,
-          password,
-          region
+          password
         })
           .then(() =>
             // Try to create a second user with the same username
             chai.request(app).post('/api/users').send({
               username,
-              password,
-              region
+              password
             })
           )
           .then(res => {
@@ -219,27 +208,23 @@ describe('/api/user', function () {
           .post('/api/users')
           .send({
             username,
-            password,
-            region
+            password
           })
           .then(res => {
             expect(res).to.have.status(201);
             expect(res.body).to.be.an('object');
             expect(res.body).to.have.keys(
               'username',
-              'region',
               'id',
               'events'
             );
             expect(res.body.username).to.equal(username);
-            expect(res.body.region).to.equal(region);
             return User.findOne({
               username
             });
           })
           .then(user => {
-            expect(user).to.not.be.null;
-            expect(user.region).to.equal(region);
+            expect(user).to.not.be.null
             return user.validatePassword(password);
           })
           .then(passwordIsCorrect => {
@@ -260,13 +245,11 @@ describe('/api/user', function () {
         return User.create(
           {
             username,
-            password,
-            region
+            password
           },
           {
             username: usernameB,
-            password: passwordB,
-            region: regionB
+            password: passwordB
           }
         )
           .then(() => chai.request(app).get('/api/users'))
@@ -275,9 +258,7 @@ describe('/api/user', function () {
             expect(res.body).to.be.an('array');
             expect(res.body).to.have.length(2);
             expect(res.body[0].username).to.equal(username);
-            expect(res.body[0].region).to.equal(region);
             expect(res.body[1].username).to.equal(usernameB);
-            expect(res.body[1].region).to.equal(regionB);
           });
       });
     });

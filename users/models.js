@@ -16,7 +16,6 @@ const UserSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  region: {type: String},
   events: [{type: mongoose.Schema.Types.ObjectId, ref: 'Event'}],
 });
 
@@ -24,7 +23,6 @@ UserSchema.methods.serialize = function() {
   return {
     id: this._id,
     username: this.username,
-    region: this.region,
     events: this.events || ''
   };
 };
