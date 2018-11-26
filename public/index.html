@@ -15,7 +15,7 @@
     <header class="col-12" role="banner">
         <div class="row">
             <h1>Con Life</h1>
-            <h2>Your database for fan conventions around the world</h2>
+            <h2>Your crowd-sourced database for fan conventions around the world</h2>
         </div>
     </header>
     <div class="row">
@@ -25,21 +25,11 @@
                     <a href="#" class="signup-notice">Sign up</a>
                     <form action="/api/users/" method="post" class="signup-form hidden">
                         <label>
-                            <input type="text" size="40" name="username" class="username1" aria-label="username" placeholder="Choose a username" required>
+                            <input type="text" size="35" name="username" class="username1" aria-label="username" placeholder="Choose a username" required>
                         </label>
                         <label>
-                            <input type="password" size="40" name="password" class="password1" aria-label="password" placeholder="Choose a password of at least 5 characters" required>
+                            <input type="password" size="35" name="password" class="password1" aria-label="password" placeholder="Password must be at least 5 characters" required>
                         </label>
-                        <label>Select your region
-                                <select name="region" class="user-region">
-                                    <option value="----">----</option>
-                                    <option value="northeast">Northeast</option>
-                                    <option value="south">South</option>
-                                    <option value="midwest">Midwest</option>
-                                    <option value="west">West</option>
-                                    <option value="international">International</option>
-                                </select>
-                            </label>
                         <button type="submit" class="signup-button">Signup</button>
                     </form>
                 </div>
@@ -47,11 +37,11 @@
                     <a href="#" class="signin-notice">Sign in</a>
                     <form action="/api/auth/login" method="post" class="signin-form hidden">
                         <label>
-                            <input type="text" size="40" name="username" class="username2" aria-label="username" placeholder="Enter your username"
+                            <input type="text" size="35" name="username" class="username2" aria-label="username" placeholder="Enter your username"
                                 required>
                         </label>
                         <label>
-                            <input type="password" size="40" name="password" class="password2" aria-label="password" placeholder="Enter your password" required>
+                            <input type="password" size="35" name="password" class="password2" aria-label="password" placeholder="Enter your password" required>
                         </label>
                         <button type="submit" class="signin-button">Sign-in</button>
                     </form>
@@ -63,10 +53,12 @@
                     <label>Region
                             <select name="region" class="region">
                                 <option value="all">All</option>
-                                <option value="northeast">Northeast</option>
-                                <option value="south">South</option>
-                                <option value="midwest">Midwest</option>
-                                <option value="west">West</option>
+                                <optgroup label="United States">
+                                    <option value="northeast">Northeast</option>
+                                    <option value="south">South</option>
+                                    <option value="midwest">Midwest</option>
+                                    <option value="west">West</option>
+                                </optgroup>
                                 <option value="international">International</option>
                             </select>
                         </label>

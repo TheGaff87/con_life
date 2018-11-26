@@ -22,7 +22,7 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  const stringFields = ['username', 'password', 'region'];
+  const stringFields = ['username', 'password'];
   const nonStringField = stringFields.find(
     field => field in req.body && typeof req.body[field] !== 'string'
   );
@@ -113,7 +113,6 @@ router.post('/', jsonParser, (req, res) => {
       return User.create({
         username,
         password: hash,
-        region
       });
     })
     .then(user => {

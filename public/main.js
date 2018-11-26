@@ -63,10 +63,12 @@ function getAndDisplayAllEvents() {
 
 $(".signup-notice").click(function(event) {
     $(".signup-form").toggleClass("hidden");
+    $(".signin-form").addClass("hidden");
 })
 
 $(".signin-notice").click(function(event) {
     $(".signin-form").toggleClass("hidden");
+    $(".signup-form").addClass("hidden");
 })
 
 //GET--events filtered by region
@@ -244,10 +246,12 @@ function postValidation(data) {
     </label>
     <label>Region <span class="required">(required)</span>
         <select name="event-region" class="event-region" required>
-            <option value="northeast">Northeast</option>
-            <option value="south">South</option>
-            <option value="midwest">Midwest</option>
-            <option value="west">West</option>
+            <optgroup label="United States">
+                <option value="northeast">Northeast</option>
+                <option value="south">South</option>
+                <option value="midwest">Midwest</option>
+                <option value="west">West</option>
+            </optgroup>
             <option value="international">International</option>
         </select>
     </label>
@@ -255,7 +259,7 @@ function postValidation(data) {
         <input type="url" size="30" name="event-website" class="event-website" placeholder="Enter event website" required>
     </label>
     <label>Fandom <span class="required">(required)</span>
-        <input type="text" size="30" name="event-fandom" class="event-fandom" placeholder="If no fandom, enter 'none' required>
+        <input type="text" size="30" name="event-fandom" class="event-fandom" placeholder="If no specific fandom, enter 'none'" required>
     </label>
     <label>Celebrity Guests
         <textarea rows="4" cols="40" name="event-guests" class="event-guests" placeholder="Enter guest names, separated by commas"></textarea>
@@ -455,8 +459,17 @@ $(".login").on("click", ".submit-event", function (event) {
         }
     }
 
+    let eventWebsite = "";
+    if ($(".event-website").val().indexOf("http") == -1) {
+        eventWebsite = `https://${$(".event-website").val()}`
+    }else{
+        eventWebsite = $(".event-website").val();
+    }
+
     if (submit == false || moment($(".event-start-date").val()).format("YYYY/MM/DD") < moment().format("YYYY/MM/DD") || moment($(".event-end-date").val()).format("YYYY/MM/DD") < moment($(".event-start-date").val()).format("YYYY/MM/DD") || moment($(".event-end-date").val()).format("YYYY/MM/DD") < moment().format("YYYY/MM/DD")) {
         $(".add-event-form").before(`<p class="required-enter-all"> Please enter all required fields</p>`)
+        $(".required-enter-all").fadeOut(5000, function() {
+        })
     }else{
     const eventData = {
         name: $(".event-name").val(),
@@ -464,7 +477,7 @@ $(".login").on("click", ".submit-event", function (event) {
         endDate: moment($(".event-end-date").val()).format("YYYY/MM/DD"),
         location: $(".event-location").val(),
         region: $(".event-region").val(),
-        website: $(".event-website").val(),
+        website: eventWebsite,
         fandom: $(".event-fandom").val(),
         guests: $(".event-guests").val().split(",")
     }

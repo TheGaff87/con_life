@@ -41,18 +41,15 @@ main h2 {
     margin-top: 3em;
 }
 
-header {
-    border: 1px black solid;
-    background-color: black;
-    color: white;
-}
-
 .js-event {
-    border: 1px black solid;
     margin: 1em;
     height: 350px;
     padding-top: 1em;
     text-align: center;
+}
+
+a {
+    text-decoration: none;
 }
 
 .events {
@@ -121,6 +118,10 @@ textarea {
     width: 20px;
     height: 20px;
     margin-left: 5px;
+}
+
+.signup-confirm {
+    color: green;
 }
 
 @media only screen and (min-width: 710px) {
