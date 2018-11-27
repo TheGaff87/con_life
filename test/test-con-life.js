@@ -76,8 +76,7 @@ function seedData() {
     };
     return User.insertMany(userData), Event.insertMany(eventData);
 }
-
-const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWJmYzZlNTI0MDgwMGUwZjI4ZWIzOWMwIiwidXNlcm5hbWUiOiJ1c2VyMSIsImV2ZW50cyI6WyI1YmVlZmFiN2QyZWIyMTNlZDJhY2Q0ZDEiLCI1YmVlZmFiN2QyZWIyMTNlZDJhY2Q0Y2YiXX0sImlhdCI6MTU0MzMzMzQ2MSwiZXhwIjoxNTQzOTM4MjYxLCJzdWIiOiJ1c2VyMSJ9.8dkPg-ohI2kv4PbVWNm-uO9znNRgDISaN5LuVFRfJK4'
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidXNlcjEiLCJyZWdpb24iOiJub3J0aGVhc3QiLCJldmVudHMiOltdfSwiaWF0IjoxNTQyNzMzMDg0LCJleHAiOjE1NDMzMzc4ODQsInN1YiI6InVzZXIxIn0.-Tc6OExlxfNVpVN-l8BP2R_AjhfU2MTofaIK787D2gk'
 
 function tearDownDb() {
     console.warn('Deleting database');
