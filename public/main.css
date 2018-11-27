@@ -32,6 +32,28 @@
   width: 100%;
 }
 
+header {
+    background-color: #010508;
+    color: white;
+}
+
+h1, h2, h3>a, .username-notice {
+    font-family: 'Caveat Brush', cursive;
+}
+
+h1, h2 {
+    font-size: 2em;
+}
+
+h3>a {
+    font-size: 1.5em;
+}
+
+body {
+color: white;
+background: url("https://www.iliketowastemytime.com/sites/default/files/outer-space-hd-wallpaper.jpg") center no-repeat fixed #080C0D;
+}
+
 main {
     overflow: auto;
 }
@@ -43,13 +65,23 @@ main h2 {
 
 .js-event {
     margin: 1em;
-    height: 350px;
+    height: 300px;
     padding-top: 1em;
     text-align: center;
+    background-color: #010508;
+    color: white;
+    border-radius: 25px;
 }
 
 a {
+    color: #F8E2FF;
     text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+    background-color: #F8E2FF;
+    color: #010508;
 }
 
 .events {
@@ -96,12 +128,18 @@ textarea {
     overflow: hidden;
 }
 
-.required, .add-error, .auth-error, .signup-error, .incorrect-login, .delete-confirm-p, .start-date-error, .end-date-error, .required-enter-all {
+.required, .add-error, .auth-error, .signup-error, .incorrect-login, .start-date-error, .end-date-error, .required-enter-all {
     color: red;
 }
 
-.username-notice {
+.required {
+    font-weight: normal;
+}
+
+.username-notice, .signup-notice, .signin-notice {
     font-weight: bold;
+    color: #F8E2FF;
+    font-size: 1.5em;
 }
 
 .js-guest-list {
@@ -109,7 +147,7 @@ textarea {
     margin-right: auto;
 }
 
-.remove-event-option, .remove-event, .delete-option, .add-my-events, .add-guests, .submit-guests, .new-guests {
+.remove-event-option, .remove-event, .delete-option, .add-my-events, .add-guests, .submit-guests, .new-guests, .delete-event {
     margin-left: auto;
     margin-right: auto;
 }
@@ -122,6 +160,32 @@ textarea {
 
 .signup-confirm {
     color: green;
+}
+
+.js-guest-list, .delete-option, .add-my-events, .remove-event-option, .add-guests {
+    border: 1px #AFE7F4 solid;
+    background-color: #AFE7F4;
+    color: black;
+    padding: .5em;
+}
+
+.submit-event, .submit-guests, .signup-button, .signin-button, .delete-event, .remove-event {
+    border: 1px #F8E2FF solid;
+    background-color: #F8E2FF;
+    color: #010508;
+    padding: .5em;
+}
+
+button  {
+    border: 1px #AFE7F4 solid;
+    background-color: #AFE7F4;
+    color: #010508;
+    padding: .5em;
+    margin: .5em;
+}
+
+label {
+    font-weight: bold;
 }
 
 @media only screen and (min-width: 710px) {

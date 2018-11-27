@@ -232,35 +232,5 @@ describe('/api/user', function () {
           });
       });
     });
-
-    describe('GET', function () {
-      it('Should return an empty array initially', function () {
-        return chai.request(app).get('/api/users').then(res => {
-          expect(res).to.have.status(200);
-          expect(res.body).to.be.an('array');
-          expect(res.body).to.have.length(0);
-        });
-      });
-      it('Should return an array of users', function () {
-        return User.create(
-          {
-            username,
-            password
-          },
-          {
-            username: usernameB,
-            password: passwordB
-          }
-        )
-          .then(() => chai.request(app).get('/api/users'))
-          .then(res => {
-            expect(res).to.have.status(200);
-            expect(res.body).to.be.an('array');
-            expect(res.body).to.have.length(2);
-            expect(res.body[0].username).to.equal(username);
-            expect(res.body[1].username).to.equal(usernameB);
-          });
-      });
-    });
   });
 });

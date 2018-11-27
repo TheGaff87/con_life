@@ -76,7 +76,6 @@ function seedData() {
     };
     return User.insertMany(userData), Event.insertMany(eventData);
 }
-
 const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidXNlcjEiLCJyZWdpb24iOiJub3J0aGVhc3QiLCJldmVudHMiOltdfSwiaWF0IjoxNTQyNzMzMDg0LCJleHAiOjE1NDMzMzc4ODQsInN1YiI6InVzZXIxIn0.-Tc6OExlxfNVpVN-l8BP2R_AjhfU2MTofaIK787D2gk'
 
 function tearDownDb() {

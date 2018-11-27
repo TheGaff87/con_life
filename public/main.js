@@ -33,7 +33,7 @@ function displayAllEvents(data) {
             `
             <article class="js-event ${i}">
                 <p class="id hidden">${events[i].id}</p>
-                <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a><img src="/images/external_link.png" alt="Open external by Raphaël Buquet from the Noun Project" class="external-link"></h3>
+                <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
                 <h3>${dates}</h3>
                 <h3>${events[i].location}</h3>
                 <button type="button" class="js-guest-list" data-featherlight="#guestlist${i}">
@@ -281,7 +281,7 @@ function displayAllEventsAuth(data) {
             `
             <article class="js-event ${i}">
                 <p class="id hidden">${events[i].id}</p>
-                <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a><img src="/images/external_link.png" alt="Open external by Raphaël Buquet from the Noun Project" class="external-link"></h3>
+                <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
                 <h3>${dates}</h3>
                 <h3>${events[i].location}</h3>
                 <button type="button" class="js-guest-list" data-featherlight="#guestauth${i}">
@@ -350,7 +350,7 @@ function displayMyEvents(data) {
                 `
                 <article class="js-event ${i}">
                     <p class="id hidden">${events[i]._id}</p>
-                    <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a><img src="/images/external_link.png" alt="Open external by Raphaël Buquet from the Noun Project" class="external-link"></h3>
+                    <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
                     <h3>${dates}</h3>
                     <h3>${events[i].location}</h3>
                     <button type="button" class="js-guest-list" data-featherlight="#myevent${i}">
