@@ -65,7 +65,8 @@ html.with-featherlight {
 	max-height: 95%;
 
 	/* styling */
-	background: #fff;
+	background: url("https://www.iliketowastemytime.com/sites/default/files/outer-space-hd-wallpaper.jpg") center no-repeat fixed #080C0D;;
+	color: white;
 	cursor: auto;
 
 	/* reset white-space wrapping */

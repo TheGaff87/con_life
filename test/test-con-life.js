@@ -77,7 +77,7 @@ function seedData() {
     return User.insertMany(userData), Event.insertMany(eventData);
 }
 
-const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJuYW1lIjoidGVzdCIsInJlZ2lvbiI6Im5vcnRoZWFzdCIsImV2ZW50cyI6W119LCJpYXQiOjE1NDI2NjY2MzQsImV4cCI6MTU0MzI3MTQzNCwic3ViIjoidGVzdCJ9.URhqjQfMhH3CqDe9XBOTxjcINocxRq1VIYnXuzXFMiw'
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWJmYzZlNTI0MDgwMGUwZjI4ZWIzOWMwIiwidXNlcm5hbWUiOiJ1c2VyMSIsImV2ZW50cyI6WyI1YmVlZmFiN2QyZWIyMTNlZDJhY2Q0ZDEiLCI1YmVlZmFiN2QyZWIyMTNlZDJhY2Q0Y2YiXX0sImlhdCI6MTU0MzMzMzQ2MSwiZXhwIjoxNTQzOTM4MjYxLCJzdWIiOiJ1c2VyMSJ9.8dkPg-ohI2kv4PbVWNm-uO9znNRgDISaN5LuVFRfJK4'
 
 function tearDownDb() {
     console.warn('Deleting database');
