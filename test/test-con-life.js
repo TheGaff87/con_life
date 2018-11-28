@@ -353,7 +353,6 @@ function tearDownDb() {
             .then(function(_res) {
               res = _res;
               expect(res).to.have.status(200);
-              expect(res.body.user).to.have.lengthOf.at.least(1);
             })
         });
     
@@ -366,14 +365,14 @@ function tearDownDb() {
             .then(function(res) {
               expect(res).to.have.status(200);
               expect(res).to.be.json;
-              expect(res.body.user).to.be.a('array');
+              expect(res.body.user).to.be.a('object');
               //password is properly disguised
-              expect(res.body.user[0]).to.include.keys('events', '_id', 'username', 'password', '__v')
-              expect(res.body.user[0].username).to.equal(username);
+              expect(res.body.user).to.include.keys('events', '_id', 'username', 'password', '__v')
+              expect(res.body.user.username).to.equal(username);
               
-              if(res.body.user[0].events.length > 0) {
+              if(res.body.user.events.length > 0) {
     
-              res.body.user[0].events.forEach(function(event) {
+              res.body.user.events.forEach(function(event) {
                 expect(event).to.be.a('object');
                 expect(event).to.include.keys(
                   'id', 'name', 'startDate', 'endDate', 'location', 'website', 'guests', 'fandom', 'region');
