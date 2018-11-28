@@ -102,9 +102,8 @@ app.get('/events/fandom/:term', (req, res) => {
 
 app.get('/events/:username', jwtAuth, (req, res) =>{
   User
-    .find({username: req.params.username})
-    .populate('events')
-    .sort({'events.startDate': 1})
+    .findOne({username: req.params.username})
+    .populate({path: 'events', options: {sort: {'startDate': 1}}})
     .then(user => {
       res.json({ user
       });
@@ -193,8 +192,7 @@ app.put('/events/user/remove/:id', jwtAuth, (req, res) => {
   
   User
     .findById(req.params.id)
-    .populate('events')
-    .sort({startDate: 1})
+    .populate({path: 'events', options: {sort: {'startDate': 1}}})
     .then(user => {
       let newEvents = user.events.filter(event => event.id !== req.body.eventId)
       user.events = newEvents;

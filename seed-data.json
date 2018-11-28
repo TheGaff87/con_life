@@ -6,6 +6,7 @@
     "region" : "northeast",
     "website" : "https://conageddon.com/",
     "fandom" : "The 100",
+    "image": "images/conageddon.jpg",
     "guests" : [ 
         "Eliza Taylor", 
         "Bob Morley", 
@@ -26,6 +27,7 @@
     "region" : "south",
     "website" : "http://awesome-con.com",
     "fandom" : "none",
+    "image": "images/awesome.png",
     "guests" : [ 
         "Brent Spiner", 
         "Jon Bernthal", 
@@ -43,6 +45,7 @@
     "region" : "west",
     "website" : "https://aceuniverse.com/",
     "fandom" : "none",
+    "image": "images/ace.jpg",
     "guests" : [ 
         "Tom Hiddleston", 
         "David Tennant", 
@@ -72,7 +75,7 @@
     "region" : "midwest",
     "website" : "https://www.creationent.com/cal/gateway25.htm",
     "fandom" : "Stargate",
-    "__v" : 0
+    "image": "images/gateway.jpg"
 }
 {
     "guests" : [ 
@@ -92,5 +95,19 @@
     "region" : "international",
     "website" : "https://www.rostercon.com/en/event-convention/lux-en",
     "fandom" : "Lucifer",
-    "__v" : 0
+    "image": "images/lux.jpg"
+}
+{
+    "guests" : [ 
+        "Tim Curry", 
+        "Tom Felton"
+    ],
+    "name" : "Rhode Island Comic Con",
+    "startDate" : "2018/11/02",
+    "endDate" : "2018/11/04",
+    "location" : "Providence, RI",
+    "region" : "northeast",
+    "website" : "https://ricomiccon.com",
+    "fandom" : "none",
+    "image": "images/ricc.png"
 }

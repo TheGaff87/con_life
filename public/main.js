@@ -1,5 +1,10 @@
 "use strict";
 
+$(".get-started").click(function(event) {
+    $(".events-page").prop("hidden", false);
+    $(".intro").addClass("hidden");
+})
+
 function formatDates(startDate, endDate) {
     return moment(startDate).format("MM/DD/YYYY") + " " + "-" + " " + moment(endDate).format("MM/DD/YYYY");
 }
@@ -28,10 +33,17 @@ function displayAllEvents(data) {
     const events = data.events;
     for (let i = 0; i < events.length; i++) {
         const dates = formatDates(events[i].startDate, events[i].endDate)
+        let eventImg = "";
+        if (events[i].image == undefined) {
+            eventImg = "images/default.jpg";
+        }else{
+            eventImg = events[i].image;
+        }
 
         $(".events").append(
             `
             <article class="js-event ${i}">
+                <img src="${eventImg}" alt="${events[i].name} logo">
                 <p class="id hidden">${events[i].id}</p>
                 <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
                 <h3>${dates}</h3>
@@ -277,9 +289,18 @@ function displayAllEventsAuth(data) {
     const events = data.events;
     for (let i = 0; i < events.length; i++) {
         const dates = formatDates(events[i].startDate, events[i].endDate)
+
+        let eventImg = "";
+        if (events[i].image == undefined) {
+            eventImg = "images/default.jpg";
+        }else{
+            eventImg = events[i].image;
+        }
+
         $(".events").append(
             `
             <article class="js-event ${i}">
+                <img src="${eventImg}" alt="${events[i].name} logo">
                 <p class="id hidden">${events[i].id}</p>
                 <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
                 <h3>${dates}</h3>
@@ -335,20 +356,28 @@ function getMyEvents(user, callback) {
 }
 
 function displayMyEvents(data) {
-    if (data.user[0]._id !== undefined) {
-        userId = data.user[0]._id;
+    if (data.user._id !== undefined) {
+        userId = data.user._id;
     }
         $(".my-events").prop("hidden", false);
-        const events = data.user[0].events;
+        const events = data.user.events;
         if (events.length > 0) {
             $(".my-events").append(`<h2 class="my-events-h2">My Saved Events</h2>`)
         }
         for (let i = 0; i < events.length; i++) {
             const dates = formatDates(events[i].startDate, events[i].endDate)
+
+            let eventImg = "";
+            if (events[i].image == undefined) {
+                eventImg = "images/default.jpg";
+            }else{
+                eventImg = events[i].image;
+            }
     
             $(".my-events").append(
                 `
                 <article class="js-event ${i}">
+                    <img src="${eventImg}" alt="${events[i].name} logo">
                     <p class="id hidden">${events[i]._id}</p>
                     <h3><a href="${events[i].website}" target="_blank">${events[i].name}</a></h3>
                     <h3>${dates}</h3>
@@ -494,7 +523,6 @@ $(".login").on("click", ".submit-event", function (event) {
 //PUT endpoint; add guests to event
 $("body").on("click", ".add-guests", function(event) {
     const currentForm = $(this).parent().find("form");
-    console.log(currentForm);
     $(currentForm).toggleClass("hidden"); 
 })
 
@@ -514,14 +542,14 @@ function addGuests(event, data, callback) {
 
 $("body").on("click", ".submit-guests", function(event) {
     event.preventDefault();
-    $(".featherlight-close").click();
-    if ($(this).parent().find("textarea").val() !== "") {
+    if ($(this).parent().find("textarea").val() !== undefined && ($(this).parent().find("textarea").val() !== "")) {
     const eventId = $(this).parent().children("p").text();
     const currentEl = $(this).parent().find("textarea");
     const eventData = {
         id: eventId,
         guests: $(currentEl).val().split(",")
     }
+    $(".featherlight-close").click();
     $(".events").html("");
     $(".my-events").html("");
     addGuests(eventId, eventData, getAndDisplayAllFandoms);

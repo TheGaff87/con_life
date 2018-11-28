@@ -29,6 +29,7 @@ const eventSchema = mongoose.Schema({
         required: true,
     },
     fandom: {type: String},
+    image: {type: String},
     guests: {type: Array}
 });
 
@@ -42,6 +43,7 @@ eventSchema.methods.serialize = function() {
         website: this.website,
         region: this.region,
         fandom: this.fandom,
+        image: this.image,
         guests: this.guests
     }
 }
