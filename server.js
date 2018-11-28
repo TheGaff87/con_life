@@ -37,6 +37,7 @@ app.use('/api/auth/', authRouter);
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
+//returns all events
 app.get('/events', (req, res) => {
   Event
     .find()
@@ -54,6 +55,7 @@ app.get('/events', (req, res) => {
     });
 });
 
+//returns events for specified region
 app.get('/events/region/:term', (req, res) => {
   Event
     .find({region: req.params.term})
@@ -71,6 +73,7 @@ app.get('/events/region/:term', (req, res) => {
   });
 });
 
+//returns events for specified fandom
 app.get('/events/fandom', (req, res) => {
   Event
     .distinct("fandom")
@@ -100,6 +103,7 @@ app.get('/events/fandom/:term', (req, res) => {
   });
 });
 
+//returns document for user; used to extract userID and user events
 app.get('/events/:username', jwtAuth, (req, res) =>{
   User
     .findOne({username: req.params.username})
@@ -115,6 +119,7 @@ app.get('/events/:username', jwtAuth, (req, res) =>{
     });
   });
 
+//adds new event
 app.post('/events', jwtAuth, (req, res) => {
   const requiredFields = ['name', 'startDate', 'endDate', 'location', 'region', 'website', 'fandom'];
   for (let i = 0; i < requiredFields.length; i++) {
@@ -145,6 +150,7 @@ app.post('/events', jwtAuth, (req, res) => {
     });
 });
 
+//adds guests to event
 app.put('/events/:id', jwtAuth, (req, res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     const message = (
@@ -162,6 +168,7 @@ app.put('/events/:id', jwtAuth, (req, res) => {
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
+//adds event to user
 app.put('/api/users/:id', jwtAuth, (req, res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     const message = (
@@ -181,6 +188,7 @@ app.put('/api/users/:id', jwtAuth, (req, res) => {
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
 });
 
+//removes event from user
 app.put('/events/user/remove/:id', jwtAuth, (req, res) => {
   if (!(req.params.id && req.body.id && req.params.id === req.body.id)) {
     const message = (
@@ -201,6 +209,7 @@ app.put('/events/user/remove/:id', jwtAuth, (req, res) => {
     .then(user => res.json(user));
 })
 
+//deletes event from database
 app.delete('/events/:id', jwtAuth, (req, res) => {
   Event
     .findByIdAndRemove(req.params.id)
@@ -208,8 +217,6 @@ app.delete('/events/:id', jwtAuth, (req, res) => {
     .catch(err => res.status(500).json({ message: 'Internal server error'}));
 });
 
-// Referenced by both runServer and closeServer. closeServer
-// assumes runServer has run and set `server` to a server object
 let server;
 
 function runServer(databaseUrl, port = PORT) {
