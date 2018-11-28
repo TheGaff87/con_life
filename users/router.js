@@ -92,7 +92,7 @@ router.post('/', jsonParser, (req, res) => {
     });
   }
 
-  let {username, password, region = ''} = req.body;
+  let {username, password = ''} = req.body;
 
   return User.find({username})
     .count()
