@@ -140,7 +140,8 @@ app.post('/events', jwtAuth, (req, res) => {
       region: req.body.region,
       website: req.body.website,
       fandom: req.body.fandom,
-      guests: req.body.guests
+      guests: req.body.guests,
+      image: req.body.image
     })
     .then(event => res.status(201).json(event.serialize())
   )

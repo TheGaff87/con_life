@@ -6,7 +6,7 @@
     "region" : "northeast",
     "website" : "https://conageddon.com/",
     "fandom" : "The 100",
-    "image": "images/conageddon.jpg",
+    "image" : "images/conageddon.jpg",
     "guests" : [ 
         "Eliza Taylor", 
         "Bob Morley", 
@@ -27,7 +27,7 @@
     "region" : "south",
     "website" : "http://awesome-con.com",
     "fandom" : "none",
-    "image": "images/awesome.png",
+    "image" : "images/awesome.png",
     "guests" : [ 
         "Brent Spiner", 
         "Jon Bernthal", 
@@ -35,26 +35,6 @@
         "Tim Curry", 
         "Val Kilmer", 
         "Michael Biehn"
-    ]
-}
-{
-    "name" : "ACE Comic Con",
-    "startDate" : "2019/01/11",
-    "endDate" : "2019/01/13",
-    "location" : "Glendale, AZ",
-    "region" : "west",
-    "website" : "https://aceuniverse.com/",
-    "fandom" : "none",
-    "image": "images/ace.jpg",
-    "guests" : [ 
-        "Tom Hiddleston", 
-        "David Tennant", 
-        "Michael Fassbender", 
-        "Krysten Ritter", 
-        "Charlie Cox", 
-        "Tye Sheridan", 
-        "Alexandra Shipp", 
-        "Taron Egerton"
     ]
 }
 {
@@ -75,7 +55,7 @@
     "region" : "midwest",
     "website" : "https://www.creationent.com/cal/gateway25.htm",
     "fandom" : "Stargate",
-    "image": "images/gateway.jpg"
+    "image" : "images/gateway.jpg"
 }
 {
     "guests" : [ 
@@ -95,7 +75,40 @@
     "region" : "international",
     "website" : "https://www.rostercon.com/en/event-convention/lux-en",
     "fandom" : "Lucifer",
-    "image": "images/lux.jpg"
+    "image" : "images/lux.jpg"
+}
+{
+    "name" : "ACE Comic Con",
+    "startDate" : "2019/01/11",
+    "endDate" : "2019/01/13",
+    "location" : "Glendale, AZ",
+    "region" : "west",
+    "website" : "https://aceuniverse.com/",
+    "fandom" : "none",
+    "image" : "images/ace.jpg",
+    "guests" : [ 
+        "Tom Hiddleston", 
+        "David Tennant", 
+        "Michael Fassbender", 
+        "Krysten Ritter", 
+        "Charlie Cox", 
+        "Tye Sheridan", 
+        "Alexandra Shipp", 
+        "Taron Egerton"
+    ]
+}
+{
+    "guests" : [ 
+        "Stephen Amell", 
+        " Tom Cavanagh"
+    ],
+    "name" : "Heroes and Villains Fan Fest",
+    "startDate" : "2018/12/01",
+    "endDate" : "2018/12/02",
+    "location" : "San Jose, CA",
+    "region" : "west",
+    "website" : "https://heroesfanfest.com/sanjose/",
+    "fandom" : "none"
 }
 {
     "guests" : [ 

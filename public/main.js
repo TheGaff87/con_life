@@ -298,7 +298,7 @@ function displayAllEventsAuth(data) {
                 <form action='/events' method='post' class='add-guest-form hidden'>
                 <p class='id hidden'>${events[i].id}</p>
                 <label>
-        <textarea rows='4' cols='50' name='new-guests' class='new-guests' placeholder='Enter guest names, separated by commas'></textarea>
+        <textarea rows='4' cols='40' name='new-guests' class='new-guests' placeholder='Enter guest names, separated by commas'></textarea>
         </label>
         <button type='submit' class='submit-guests'>Submit Guests</button>
         </form>
