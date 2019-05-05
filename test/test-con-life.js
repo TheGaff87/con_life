@@ -76,7 +76,7 @@ function seedData() {
     };
     return User.insertMany(userData), Event.insertMany(eventData);
 }
-const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWJmYzZlNTI0MDgwMGUwZjI4ZWIzOWMwIiwidXNlcm5hbWUiOiJ1c2VyMSIsImV2ZW50cyI6WyI1YmY0ODhkYzhmNGI0NDRkMTE4ZWFhNzciLCI1YmVlZmFiN2QyZWIyMTNlZDJhY2Q0Y2YiXX0sImlhdCI6MTU0MzM2Njk1OCwiZXhwIjoxNTQzOTcxNzU4LCJzdWIiOiJ1c2VyMSJ9.NecvxNJ-v5arDUqUdoB0Z-JF6uEVqk2S-JtxzFfHh0Q'
+const token = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNWJmZDY4YTZhNzE3OTMwMDE2ZjJlODk5IiwidXNlcm5hbWUiOiJ1c2VyMiIsImV2ZW50cyI6WyI1YmZlZmFjZDM4ZjNiNmI5NjEwMjExNmQiXX0sImlhdCI6MTU1NzEwMDQ0MywiZXhwIjoxNTU3NzA1MjQzLCJzdWIiOiJ1c2VyMiJ9.YAoJuLKUKMif5LVDCy1m9rpV4XE9A_bGSUjtisuQSnE'
 
 function tearDownDb() {
     console.warn('Deleting database');
