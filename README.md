@@ -2,6 +2,11 @@
 
 A crowd-sourced database for fan conventions across the United States and around the world. All users can view events. Users who create an account can add events, updates guests for upcoming events, and save events to their own collection.
 
+## Demo Account
+
+Username: user2
+Password: pass2
+
 ## Link to live app: 
 https://con-life.herokuapp.com/#
 
