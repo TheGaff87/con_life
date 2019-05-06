@@ -4,8 +4,8 @@ A crowd-sourced database for fan conventions across the United States and around
 
 ## Demo Account
 
-Username: user2
-Password: pass2
+### Username: user2
+### Password: pass2
 
 ## Link to live app: 
 https://con-life.herokuapp.com/#
